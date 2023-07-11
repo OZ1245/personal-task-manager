@@ -1,4 +1,4 @@
-# API и запросы
+# API
 
 [<- Назад (Технические подробности)](./index.md)
 
@@ -8,7 +8,11 @@
     <li>
       <a href=#users>Пользователи</a>
       <ul>
-        <li>...
+        <li><a href="#user-signup">Регистрация</a>
+        <li><a href="#user-signin">Вход</a>
+        <li><a href="#user-signout">Выход</a>
+        <li><a href="#user-get">Получить пользователя</a>
+        <li><a href="#user-unactive">Отключение</a>
       </ul>
     </li>
     <li>
@@ -34,35 +38,60 @@
 
 ---
 
-## Пользователь <a name="user" id="user"></a>
+## Пользователи Users <a name="user" id="user"></a>
 
-### GET GetUser
+### Регистрация <a name="user-signup" id="user-signup"></a>
 
-Получить пользователя
+Добавить пользователя
 
-Параметры:
+**Метод:** `useUser/create`
 
-1. **userId** [Integer] Id пользователя
+**Параметры:**
 
-Запрос:
+1. email [String] Email
+2. password [String] Пароль
 
-```sql
-SELECT * FROM users WHERE id = $1
-```
 
-### POST UnactiveUser
+### Вход <a name="user-signin" id="user-signin"></a>
+
+Логин
+
+**Метод:** `useUser/login`
+
+**Параметры:**
+
+1. email [String] Email
+2. password [String] Пароль
+
+
+### Выход <a name="user-signout" id="user-signout"></a>
+
+Выход из аккаунта
+
+**Метод:** `useUser/logout`
+
+**Параметры:** нет
+
+
+### Получить пользователя <a name="user-get" id="user-get"></a>
+
+Получить авторизованного пользователя
+
+**Метод:** `useUser/getUser`
+
+**Параметры:** нет
+
+
+### Отключение <a name="user-unactive" id="user-unactive"></a>
 
 Отключить пользователя
 
-Параметры:
+**Метод:** `useUser/unactive`
 
-1. **userId** [Integer] Id пользователя
+**Параметры:**
 
-Запрос:
+1. id [Integer] Id пользователя
 
-```sql
-UPDATE users SET active = false WHERE id = $1
-```
 
 ### POST DeleteUser
 

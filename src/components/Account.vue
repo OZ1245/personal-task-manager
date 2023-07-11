@@ -1,107 +1,79 @@
 <!-- eslint-disable vue/multi-word-component-names -->
-<script setup>
-import { supabase } from '../supabase'
-import { onMounted, ref, toRefs, defineProps } from 'vue'
-
-const props = defineProps(['session'])
-const { session } = toRefs(props)
-
-const loading = ref(true)
-const username = ref('')
-const website = ref('')
-const avatar_url = ref('')
-
-onMounted(() => {
-  getProfile()
-})
-
-async function getProfile() {
-  try {
-    loading.value = true
-    const { user } = session.value
-
-    let { data, error, status } = await supabase
-      .from('profiles')
-      .select(`username, website, avatar_url`)
-      .eq('id', user.id)
-      .single()
-
-    if (error && status !== 406) throw error
-
-    if (data) {
-      username.value = data.username
-      website.value = data.website
-      avatar_url.value = data.avatar_url
-    }
-  } catch (error) {
-    alert(error.message)
-  } finally {
-    loading.value = false
-  }
-}
-
-async function updateProfile() {
-  try {
-    loading.value = true
-    const { user } = session.value
-
-    const updates = {
-      id: user.id,
-      username: username.value,
-      website: website.value,
-      avatar_url: avatar_url.value,
-      updated_at: new Date(),
-    }
-
-    let { error } = await supabase.from('profiles').upsert(updates)
-
-    if (error) throw error
-  } catch (error) {
-    alert(error.message)
-  } finally {
-    loading.value = false
-  }
-}
-
-async function signOut() {
-  try {
-    loading.value = true
-    let { error } = await supabase.auth.signOut()
-    if (error) throw error
-  } catch (error) {
-    alert(error.message)
-  } finally {
-    loading.value = false
-  }
-}
-</script>
-
 <template>
-  <form class="form-widget" @submit.prevent="updateProfile">
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="text" :value="session.user.email" disabled />
-    </div>
-    <div>
-      <label for="username">Name</label>
-      <input id="username" type="text" v-model="username" />
-    </div>
-    <div>
-      <label for="website">Website</label>
-      <input id="website" type="url" v-model="website" />
-    </div>
+  <form @submit.prevent="updateProfile">
+    <label>Id</label> {{ id }}
+
+    <label for="email">Email</label>
+    <input id="email" type="text" :value="session.user.email" disabled />
+
+    <label for="name">Name</label>
+    <input id="name" type="text" v-model="name" />
+
+    <label for="language">Language</label>
+    <input id="language" type="text" v-model="language" />
+
+    <label>Active</label> {{ active }}
 
     <div>
       <input
         type="submit"
         class="button primary block"
-        :value="loading ? 'Loading ...' : 'Update'"
-        :disabled="loading"
+        value="Update"
       />
     </div>
 
-    <div>
-      <button class="button block" @click="signOut" :disabled="loading">Sign Out</button>
-    </div>
+    <button @click="onSignOut">Sign Out</button>
+    <button @click="onDeleteAccount">Delete account</button>
   </form>
 </template>
+
+<script setup>
+import { onMounted, ref, toRefs, defineProps } from 'vue'
+import { useUser } from '@/libs/user'
+
+const $user = useUser()
+
+const props = defineProps(['session'])
+const { session } = toRefs(props)
+
+const id = ref(null)
+const name = ref('')
+const language = ref('')
+const active = ref(false)
+
+onMounted(() => {
+  getUserData()
+})
+
+const getUserData = () => {
+  $user
+    .getUser()
+    .then(result => {
+      id.value = result.id
+      name.value = result.settings.name
+      language.value = result.settings.language
+      active.value = result.active
+    })
+}
+
+// async function updateProfile() {
+//   try {
+//     const { user } = session.value
+
+//     const updates = {
+//       id: user.id,
+//       name: name.value,
+//     }
+
+//     let { error } = await supabase.from('profiles').upsert(updates)
+
+//     if (error) throw error
+//   } catch (error) {
+//     alert(error.message)
+//   }
+// }
+
+const onSignOut = () => $user.logout()
+
+const onDeleteAccount = () => $user.deleteUser()
+</script>

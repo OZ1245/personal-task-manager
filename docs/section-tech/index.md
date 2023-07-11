@@ -6,6 +6,6 @@
 
 - База данных:
   - [Таблицы](./bd-tables.md)
-  - [API и запросы](./bd-queries.md)
+  - [API](./bd-queries.md)
 
 База данных находится на платформе Supabase. Проект: https://supabase.com/dashboard/project/wjgbuayujfnjwdzjjqfm
