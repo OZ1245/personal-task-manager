@@ -1,4 +1,4 @@
-# API
+# API <a name="top" id="top"></a>
 
 [<- Назад (Технические подробности)](./index.md)
 
@@ -9,10 +9,11 @@
       <a href=#users>Пользователи</a>
       <ul>
         <li><a href="#user-signup">Регистрация</a>
-        <li><a href="#user-signin">Вход</a>
-        <li><a href="#user-signout">Выход</a>
+        <li><a href="#user-signin">Вход в аккаунт</a>
+        <li><a href="#user-signout">Выход из аккаунта</a>
         <li><a href="#user-get">Получить пользователя</a>
-        <li><a href="#user-unactive">Отключение</a>
+        <li><a href="#user-unactive">Отключение пользователя</a>
+        <li><a href="#user-delete">Удалить пользователя</a>
       </ul>
     </li>
     <li>
@@ -40,72 +41,61 @@
 
 ## Пользователи Users <a name="user" id="user"></a>
 
-### Регистрация <a name="user-signup" id="user-signup"></a>
+- **Таблица:** public.Users
+- **Библиотека:** useUser() (`/src/libs/user.js`)
+- **API:** `/src/api/user.js`
 
-Добавить пользователя
+### **Регистрация** <a name="user-signup" id="user-signup"></a>
 
-**Метод:** `useUser/create`
+Добавить нового пользователя
 
-**Параметры:**
+- **Метод:** `create`
+- **Параметры:**
+  1. email [String] Email
+  1. password [String] Пароль
 
-1. email [String] Email
-2. password [String] Пароль
-
-
-### Вход <a name="user-signin" id="user-signin"></a>
+### **Вход в аккаунт** <a name="user-signin" id="user-signin"></a>
 
 Логин
 
-**Метод:** `useUser/login`
+- **Метод:** `login`
+- **Параметры:**
+  1. **email** (String) Email
+  2. **password** (String) Пароль
 
-**Параметры:**
-
-1. email [String] Email
-2. password [String] Пароль
-
-
-### Выход <a name="user-signout" id="user-signout"></a>
+### **Выход из аккаунта** <a name="user-signout" id="user-signout"></a>
 
 Выход из аккаунта
 
-**Метод:** `useUser/logout`
+- **Метод:** `logout`
+- **Параметры:** нет
 
-**Параметры:** нет
-
-
-### Получить пользователя <a name="user-get" id="user-get"></a>
+### **Получить пользователя** <a name="user-get" id="user-get"></a>
 
 Получить авторизованного пользователя
 
-**Метод:** `useUser/getUser`
+- **Метод:** `getUser`
+- **Параметры:** нет
 
-**Параметры:** нет
-
-
-### Отключение <a name="user-unactive" id="user-unactive"></a>
+### **Отключить пользователя** <a name="user-unactive" id="user-unactive"></a>
 
 Отключить пользователя
 
-**Метод:** `useUser/unactive`
+- **Метод:** `unactive`
+- **Параметры:**
+  1. **id** (Integer) Id пользователя
 
-**Параметры:**
+### **Удалить пользователя** <a name="user-delete" id="user-delete"></a>
 
-1. id [Integer] Id пользователя
+Удалить пользователя. В разработке.
 
+- **Метод:** `deleteUser`
+- **Параметры:**
+  1. **id** (Integer) Id пользователя
 
-### POST DeleteUser
+---
 
-Удалить пользователя
-
-Параметры:
-
-1. **userId** [Integer] Id пользователя
-
-Запрос:
-
-```sql
-DELETE FROM users WHERE id = $1
-```
+<a href="#top">К содержанию</a>
 
 ---
 
