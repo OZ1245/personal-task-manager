@@ -22,7 +22,7 @@
 | id       | int8       | NULL                  | -                                          |
 | created  | timestampz | now()                 | Дата создания                              |
 | name     | varchar    | NULL                  | Название                                   |
-| userId   | FK         | NULL                  | Владелец                                   |
+| user_id  | FK         | NULL                  | Владелец                                   |
 | settings | jsonb      | NULL                  | Настройки проекта:                         |
 |          |            |                       | - fields [Arr] Настройки полей карточки:   |
 |          |            |                       | - id [uuid] Id поля                        |

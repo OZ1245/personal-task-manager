@@ -128,9 +128,10 @@ const getById = async (id) => {
     .select('*')
     .eq('id', id)
     .then(({ data, error }) => {
+      console.log('data:', data)
       if (error) throw error
 
-      return data
+      return data[0]
     })
     .catch(error => {
       throw error.message

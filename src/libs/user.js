@@ -8,10 +8,10 @@ export function useUser() {
   const createUser = async (data) => {
     return await userApi
       .signUp(data)
-      .then(result => {
+      .then(async result => {
         $store.dispatch('setUserAuthData', result)
 
-        userApi
+        return await userApi
           .insertRow({
             id: result.user.id,
             email: result.user.email,
@@ -25,9 +25,6 @@ export function useUser() {
           .then(result => {
             return result
           })
-      })
-      .catch(error => {
-        throw error
       })
   }
 
