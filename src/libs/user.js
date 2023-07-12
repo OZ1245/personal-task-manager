@@ -1,9 +1,10 @@
 import { useStore } from 'vuex'
 import userApi from '@/api/user'
-
+import { useRouter } from 'vue-router'
 
 export function useUser() { 
   const $store = useStore()
+  const $router = useRouter()
 
   const createUser = async (data) => {
     return await userApi
@@ -29,35 +30,68 @@ export function useUser() {
   }
 
   const login = async (data) => {
+    console.log(' --- login lib method ---')
     return await userApi
       .signIn(data)
-      .then(result => {
-        userApi
-          .getById(result.user.id)
-          .then(async rows => {
-            if (rows.lenght && rows.active) {
-              $store.dispatch('setUserAuthData', result)
+      .then(async result => {
+        console.log('result:', result)
 
-              return await userApi
-                .updateById({
-                  last_login: result.user.updated_at
-                },
-                  result.user.id
-                )
-                .then(result => {
-                  return result
+        if (result) {
+          return await userApi
+            .getById(result.user.id)
+            .then(row => {
+              console.log('row:', row)
+              if (row.active) {
+                localStorage.setItem('token', result?.session.access_token)
+                $store.dispatch('setUserAuthData', result)
+
+                userApi
+                  .updateById({
+                    last_login: result.user.updated_at
+                  },
+                    result.user.id
+                  )
+                  .then(result => {
+                    return result
+                  })
+                
+                $router.push({
+                  name: 'Home'
                 })
-            } else {
-              return {
-                error: 'This user is not active or has been deleted'
+              } else {
+                return {
+                  error: 'This user is not active or has been deleted'
+                }
               }
-            }
-          })
+            })
+        }
       })
   }
 
   const logout = async () => {
-    return await userApi.signOut()
+    return await userApi
+      .signOut()
+      .then(result => {
+        if (result) {
+          $store.dispatch('clearAuthData')
+          localStorage.removeItem('token')
+          $router.push({
+            name: 'Auth'
+          })
+        }
+      })
+  }
+
+  const checkSession = async () => {
+    console.log('--- checkSession lib method ---')
+
+    return await userApi
+      .getSession()
+      .then(data => {
+        console.log('data:', data)
+
+        return data
+      })
   }
 
   const getUser = async () => {
@@ -141,5 +175,6 @@ export function useUser() {
     logout,
     unactive,
     deleteUser,
+    checkSession,
   }
 }

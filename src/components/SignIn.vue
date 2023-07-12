@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <form @submit.prevent="onRegistration">
+  <form @submit.prevent="onLogin">
     <label for="email">Email</label>
     <input id="email" type="email" v-model="email" />
 
@@ -20,13 +20,8 @@ const $user = useUser()
 const email = ref('')
 const password = ref('')
 
-const onRegistration = () => $user.login({
+const onLogin = () => $user.login({
   email: email.value,
   password: password.value
 })
-  .then(error => {
-    if (error) {
-      alert(error)
-    }
-  })
 </script>

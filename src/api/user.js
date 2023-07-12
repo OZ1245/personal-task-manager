@@ -39,6 +39,19 @@ const signOut = async () => {
     })
 }
 
+const getSession = () => {
+  return supabase.auth
+    .getSession()
+    .then(({ data, error }) => {
+      if (error) throw error
+
+      return data
+    })
+    .catch(error => {
+      throw error.message
+    })
+}
+
 const deleteUser = async (id) => {
   console.log('--- deleteUser api method ---')
   return await supabase.auth.admin
@@ -149,4 +162,5 @@ export default {
   updateById,
   deleteById,
   deleteUser,
+  getSession,
 }
