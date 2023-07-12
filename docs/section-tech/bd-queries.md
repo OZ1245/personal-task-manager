@@ -17,9 +17,16 @@
       </ul>
     </li>
     <li>
-      <a href=#settings>Настройки</a>
+      <a href=#projects>Проекты</a>
       <ul>
-        <li>...
+        <li><a href="#projects-create">Создать проект</a>
+        <li><a href="#projects-fetch-many">Запросить проекты</a>
+        <li><a href="#projects-get-many">Получить проекты</a>
+        <li><a href="#projects-fetch-one">Запросить проект</a>
+        <li><a href="#projects-get-one">Получить проект</a>
+        <li><a href="#projects-update">Обновить проект</a>
+        <li><a href="#projects-delete-many">Удалить проекты</a>
+        <li><a href="#projects-delete-one">Удалить проект</a>
       </ul>
     </li>
     <li>
@@ -44,6 +51,7 @@
 - **Таблица:** public.Users
 - **Библиотека:** useUser() (`/src/libs/user.js`)
 - **API:** `/src/api/user.js`
+- **Хранилище:** `/src/store/user.js`
 
 ### **Регистрация** <a name="user-signup" id="user-signup"></a>
 
@@ -170,102 +178,97 @@ DELETE FROM templates WHERE id = $1
 
 ---
 
-## Проекты <a name=projects id="projects"></a>
+<a href="#top">К содержанию</a>
 
-### POST CreateProject
+---
 
-Создать новый проект
+## Проекты Projects <a name=projects id="projects"></a>
 
-Параметры:
+- **Таблица:** public.Project
+- **Библиотека:** useProject() (`/src/libs/project.js`)
+- **API:** `/src/api/projects.js`
+- **Хранилище:** `/src/store/projects.js`
 
-1. **userId** [Integer] Id пользователя
-2. **name** [Str] Название 
-3. **settings** [JSON] Настройки проекта
+### **Создать проект** <a name="projects-create" id="projects-create"></a>
 
-Запрос:
+Создать новый проект пользователя
 
-```sql
-INSERT INTO projects (userId, name, settings) VALUES ($1, $2, $3)
-```
+- **Метод:** `createProject`
+- **Параметры:**
+  1. **name** (String) Название
+  1. **settings** (JSON) Настройки:
+      - **fields** (Array) Массив настроек полей карточки:
+        - **id** (String) Уникальный id поля в рамках настройки
+        - **filed_id** (String) Уникальный id поля. FK из public.Fields
+        - **editable** (Boolean) Редактируемое
+        - **default_value** (String | Integer) Значение по-умолчанию
+        - **multiply** (Boolean) Множественное
+        - **rules** (JSON) Набор правил
 
-### GET GetProjects
+### **Запросить проекты** <a name="projects-fetch-many" id="projects-fetch-many"></a>
+
+Запросить проекты пользователя
+
+- **Метод:** `fetchProjects`
+- **Параметры:** нет
+
+### **Получить проекты** <a name="projects-get-many" id="projects-get-many"></a>
 
 Получить проекты пользователя
 
-Параметры:
+- **Метод:** `getProjects`
+- **Параметры:** нет
 
-1. **userId** [Integer] Id пользователя
+### **Запросить проект** <a name="projects-fetch-one" id="projects-fetch-one"></a>
 
-Запрос:
+Запросить проект пользователя
 
-```sql
-SELECT * FROM projects WHERE userId = $1
-```
+- **Метод:** `fetchProject`
+- **Параметры:**
+  1. **id** (Integer) Id проекта
 
-### GET GetProject
+### **Получить проект** <a name="projects-get-one" id="projects-get-one"></a>
 
-Получить проект
+Получить проект пользователя
 
-Параметры:
+- **Метод:** `getProject`
+- **Параметры:** нет
 
-1. **projectId** [Integer] Id проекта
+### **Обновить проект** <a name="projects-update" id="projects-update"></a>
 
-Запрос:
+Обновить проект
 
-```sql
-SELECT * FROM projects WHERE id = $1
-```
+- **Метод:** `updateProject`
+- **Параметры:**
+  1. **id** (Integer) Id проекта
+  1. **name** (String) Название
+  1. **settings** (JSON) Настройки:
+      - **fields** (Array) Массив настроек полей карточки:
+        - **id** (String) Уникальный id поля в рамках настройки
+        - **filed_id** (String) Уникальный id поля. FK из public.Fields
+        - **editable** (Boolean) Редактируемое
+        - **default_value** (String | Integer) Значение по-умолчанию
+        - **multiply** (Boolean) Множественное
+        - **rules** (JSON) Набор правил
 
-### POST SaveProject
+### **Удалить проекты** <a name="projects-delete-many" id="projects-delete-many"></a>
 
-Редактировать проект
+Все проекты пользователя
 
-Параметры:
+- **Метод:** `Получить проекты пользователя`
+- **Параметры:** нет
 
-1. **projectId** [Integer] Id проекта
-1. **name** [String] Название
-1. **settings** [JSON] Настройки проекта
-
-Запрос:
-
-```sql
-UPDATE projects SET name = $2, settings = $3 WHERE id = $1
-```
-
-### POST DeleteProject
+### **Удалить проект** <a name="projects-delete-one" id="projects-delete-one"></a>
 
 Удалить проект
 
-Параметры:
+- **Метод:** `deleteProject`
+- **Параметры:**
+  1. **id** (Integer) id проекта
 
-1. **projectId** [Integer] Id проекта
+---
 
-Запрос:
-
-```sql
-CREATE FUNCTION f_delete_project (projectId INTEGER) 
-RETURNS BOOLEAN
-AS $$
-  DELETE FROM tasks WHERE projectId = $1;
-  DELETE FROM projects WHERE id = $1;
-
-  RETURN true;
-$$
-
-SELECT f_delete_project($1);
-```
-
-### GET GetFieldTypes
-
-Получить типы полей.
-
-Параметры: нет
-
-Запрос:
-
-```sql
-SELECT * FROM fieldTypes
-```
+<a href="#top">К содержанию</a>
 
 ---
 

@@ -8,8 +8,8 @@ export function useProject() {
 
   /**
    * Создать проект
-   * @param {*} data 
-   * @returns 
+   * @param {Object} data 
+   * @returns {Promise} Данные проекта
    */
   const createProject = async (data) => {
     // TODO: Когда будет библиотека для работы с шаблонами
@@ -26,6 +26,7 @@ export function useProject() {
             user_id: user.id
           })
           .then(result => {
+            fetchProjects()
             $store.dispatch('setProject', result)
             
             return result
