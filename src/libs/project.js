@@ -33,6 +33,11 @@ export function useProject() {
         })
   }
 
+  /**
+   * Запросить проект по id
+   * @param {Integer} id 
+   * @returns {Promise} Данные проекта
+   */
   const fetchProject = async (id) => {
     return await projectsApi
       .readById(id)
@@ -43,10 +48,18 @@ export function useProject() {
       })
   }
 
+  /**
+   * Получить проект
+   * @returns {Object} Объект проекта
+   */
   const getProject = () => {
     return computed(() => $store.getters.getProject).value
   }
 
+  /**
+   * Запросить все проекты пользователя
+   * @returns {Promise} Список проектов
+   */
   const fetchProjects = async () => {
     return await userApi
       .retrieveUser()
@@ -61,20 +74,41 @@ export function useProject() {
       })
   }
 
+  /**
+   * Получить все проекты пользователя
+   * @returns {Array} Список проектов
+   */
   const getProjects = () => {
     return computed(() => $store.getters.getProjects).value
   }
 
+  /**
+   * Отправить обновленные данные проекта
+   * @param {Object} data 
+   * @returns {Promise} Обновленные данные
+   */
   const updateProject = async (data) => {
-    return await projectsApi
-      .updateById(data)
-      .then(result => {
-        $store.dispatch('setProject', result)
+    return await userApi
+      .retrieveUser()
+      .then(async user => {
+        return await projectsApi
+          .updateById({
+            ...data,
+            user_id: user.id
+          })
+          .then(result => {
+            $store.dispatch('setProject', result)
 
-        return result
+            return result
+          })
       })
   }
 
+  /**
+   * Удалить проект
+   * @param {Integer} id 
+   * @returns {Promise} true
+   */
   const deleteProject = async (id) => {
     return await projectsApi
       .deleteById(id)
@@ -85,6 +119,10 @@ export function useProject() {
       })
   }
 
+  /**
+   * Удалить все проекты пользователя
+   * @returns {Promise} true
+   */
   const deleteProjects = async () => {
     return await userApi
       .retrieveUser()
