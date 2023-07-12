@@ -27,7 +27,6 @@ export function useProject() {
           })
           .then(result => {
             fetchProjects()
-            $store.dispatch('setProject', result)
             
             return result
           })
@@ -88,16 +87,20 @@ export function useProject() {
    * @param {Object} data 
    * @returns {Promise} Обновленные данные
    */
-  const updateProject = async (data) => {
+  const updateProject = async (data, id) => {
     return await userApi
       .retrieveUser()
       .then(async user => {
         return await projectsApi
-          .updateById({
-            ...data,
-            user_id: user.id
-          })
+          .updateById(
+            {
+              ...data,
+              user_id: user.id
+            },
+            id
+          )
           .then(result => {
+            fetchProjects()
             $store.dispatch('setProject', result)
 
             return result
@@ -114,6 +117,7 @@ export function useProject() {
     return await projectsApi
       .deleteById(id)
       .then(result => {
+        fetchProjects()
         $store.dispatch('clearProject', id)
 
         return result

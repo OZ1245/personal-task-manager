@@ -8,6 +8,6 @@ const deleteFromArray = (array, prop, value) => {
   return array
 }
 
-export default {
+export {
   deleteFromArray
 }

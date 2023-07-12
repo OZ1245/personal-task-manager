@@ -51,7 +51,6 @@ const readById = (id) => {
     .select('*')
     .eq('id', id)
     .then(({ data, error }) => {
-      console.log('project by id data:', data)
       if (error) throw error
 
       return data[0]
@@ -72,10 +71,9 @@ const readByUserId = (userId) => {
     .select('*')
     .eq('user_id', userId)
     .then(({ data, error }) => {
-      console.log('project by id data:', data)
       if (error) throw error
 
-      return data.Projects
+      return data
     })
     .catch(error => {
       throw error.message
@@ -89,7 +87,7 @@ const readByUserId = (userId) => {
  * @param {Integer} id Id записи 
  * @returns 
  */
-const updateById = ({ params, id }) => {
+const updateById = (params, id) => {
   return supabase
     .from('Projects')
     .update(params)

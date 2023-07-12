@@ -18,6 +18,22 @@ const routes = [
       auth: false
     }
   },
+  {
+    path: '/projects/create',
+    name: 'CreateProject',
+    component: () => import('../views/ProjectsView.vue'),
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/projects/edit/:id',
+    name: 'EditProject',
+    component: () => import('../views/ProjectsView.vue'),
+    meta: {
+      auth: true
+    }
+  },
 ]
 
 const router = createRouter({
@@ -26,14 +42,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  console.log('--- beforeEach ---')
-
-  // $user = useUser()
   const token = localStorage.getItem('token')
-
-  console.log('to:', to)
-  console.log('from:', from)
-  console.log('token:', token)
 
   if (to.meta.auth && to.name !== 'Auth') {
     if (!token) {

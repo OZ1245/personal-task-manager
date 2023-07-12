@@ -1,16 +1,21 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <button @click="onSignOut">Sign Out</button>
+    <ProjectsList/>
+    <button type="button" @click="onCreateProject">Create project</button>
+    <button type="button" @click="onSignOut">Sign Out</button>
   </div>
 </template>
 
 <script setup>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import { useUser } from '@/libs/user'
+import ProjectsList from '@/components/projects/ProjectsList.vue'
+import { useRouter } from 'vue-router';
 
 const $user = useUser()
+const $router = useRouter()
 const onSignOut = () => $user.logout()
+
+const onCreateProject = () => $router.push({
+  name: 'CreateProject'
+})
 </script>
