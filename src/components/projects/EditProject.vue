@@ -3,7 +3,7 @@
 
   <p v-if="loading">Loading data...</p>
 
-  <form v-if="!loading">
+  <!-- <form v-if="!loading">
     <label for="">Name</label>
     <input type="text" v-model="form.name">
 
@@ -28,14 +28,22 @@
       </div>
     </template>
 
-    <button type="button" @click="onUpdateProject">Save</button>
-  </form>  
+  </form>   -->
+  <ProjectForm
+    v-if="!loading"
+    :data="form"
+  />
+
+  <button type="button" @click="onUpdateProject">Save</button>
 </template>
 
 <script setup>
 import { reactive, computed, ref } from 'vue';
-import { useProject } from '@/libs/project'
 import { useRoute, useRouter } from 'vue-router';
+
+import ProjectForm from '@/components/projects/ProjectForm.vue';
+
+import { useProject } from '@/libs/project'
 
 const $router = useRouter()
 const $route = useRoute()

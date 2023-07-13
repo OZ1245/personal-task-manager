@@ -1,36 +1,20 @@
 <template>
   <h1>Create project</h1>
-  <form>
-    <label for="">Name</label>
-    <input type="text" v-model="form.name">
+  
+  <ProjectForm
+    :data="form"
+  />
 
-    <hr>
-
-    <h2>Settings</h2>
-
-    <h3>Fields</h3>
-    <div v-for="(field, i) in form.settings.fields" :key="`settings-field-${i}`">
-      <label for="">Name</label>
-      <input type="text" v-model="field.name">
-
-      <label for="">Editable</label>
-      <input type="checkbox" v-model="field.editable">
-
-      <label for="">Multiply</label>
-      <input type="checkbox" v-model="field.multipty">
-
-      <label for="">Default value</label>
-      <input type="text" v-model="field.default_value">
-    </div>
-
-    <button type="button" @click="onCreateProject">Create</button>
-  </form>  
+  <button type="button" @click="onCreateProject">Create</button>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+
+import ProjectForm from '@/components/projects/ProjectForm.vue'
+
 import { useProject } from '@/libs/project'
-import { useRouter } from 'vue-router';
 
 const $router = useRouter()
 const $project = useProject()
@@ -38,22 +22,13 @@ const $project = useProject()
 const form = reactive({
   name: null,
   settings: {
-    fields: [
-      {
-        name: null,
-        editable: true,
-        multipty: false,
-        default_value: null
-      }
-    ]
+    fields: []
   }
 })
 
 const onCreateProject = () => $project
   .createProject(form)
-  .then(result => {
-    console.log('result:', result)
-
+  .then(() => {
     $router.push({
       name: 'Home'
     })

@@ -1,6 +1,7 @@
 import { useStore } from 'vuex'
 import userApi from '@/api/user'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 export function useUser() { 
   const $store = useStore()
@@ -24,6 +25,8 @@ export function useUser() {
             }
           })
           .then(result => {
+            $store.dispatch('setUserData', result)
+
             return result
           })
       })
@@ -39,25 +42,30 @@ export function useUser() {
         if (result) {
           return await userApi
             .getById(result.user.id)
-            .then(row => {
+            .then(async row => {
               console.log('row:', row)
               if (row.active) {
                 localStorage.setItem('token', result?.session.access_token)
                 $store.dispatch('setUserAuthData', result)
 
-                userApi
+                return await userApi
                   .updateById({
                     last_login: result.user.updated_at
                   },
                     result.user.id
                   )
                   .then(result => {
+                    console.log('login result:', result)
+
+                    $store.dispatch('setUserData', result)
+
+                    $router.push({
+                      name: 'Home'
+                    })
+
                     return result
                   })
                 
-                $router.push({
-                  name: 'Home'
-                })
               } else {
                 return {
                   error: 'This user is not active or has been deleted'
@@ -74,6 +82,7 @@ export function useUser() {
       .then(result => {
         if (result) {
           $store.dispatch('clearAuthData')
+          $store.dispatch('clearUserData')
           localStorage.removeItem('token')
           $router.push({
             name: 'Auth'
@@ -88,13 +97,12 @@ export function useUser() {
     return await userApi
       .getSession()
       .then(data => {
-        console.log('data:', data)
 
         return data
       })
   }
 
-  const getUser = async () => {
+  const fetchUser = async () => {
     console.log('--- getUser method ---')
     return await userApi
       .retrieveUser()
@@ -109,11 +117,15 @@ export function useUser() {
       
         return await userApi
           .getById(user.id)
-          .then(rows => {
-            console.log('result:', rows)
-            return rows[0]
+          .then(result => {
+            $store.dispatch('setUserData', result)
+            return result
           })
         })
+  }
+
+  const getUser = () => {
+    return computed(() => $store.getters.getUserData).value
   }
 
   const unactive = async () => {
@@ -141,6 +153,8 @@ export function useUser() {
       })
   }
 
+  // FIXME: Наверное нельзя удалить свой же профиль. 
+  // Кажется это может только админ БД
   const deleteUser = async () => {
     console.log('--- deleteUser method ---')
     return await userApi
@@ -170,6 +184,7 @@ export function useUser() {
 
   return {
     createUser,
+    fetchUser,
     getUser,
     login,
     logout,

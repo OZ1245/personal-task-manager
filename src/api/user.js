@@ -45,7 +45,7 @@ const getSession = () => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
+      return data.session ? data.session : false
     })
     .catch(error => {
       throw error.message
