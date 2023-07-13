@@ -5,14 +5,13 @@ import router from './router'
 import store from './store'
 import { useTranslations } from '@/libs/translations'
 import dayjsPlugin from '@/plugins/dayjsPlugin'
+// TODO: Плагин для i18n
 
 const $translations = useTranslations()
 
 $translations
   .fetchTranslations()
   .then(data => {
-    console.log('data:', data)
-
     const i18n = createI18n({
       legacy: false,
       locale: data.locale,
