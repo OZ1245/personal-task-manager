@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import user from './users'
 import projects from './projects'
+import common from './common'
 
 export default createStore({
   state: {
@@ -14,5 +15,6 @@ export default createStore({
   modules: {
     user,
     projects,
+    common,
   }
 })

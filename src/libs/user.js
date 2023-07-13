@@ -11,6 +11,7 @@ export function useUser() {
     return await userApi
       .signUp(data)
       .then(async result => {
+        localStorage.setItem('token', result?.session.access_token)
         $store.dispatch('setUserAuthData', result)
 
         return await userApi
@@ -24,10 +25,11 @@ export function useUser() {
               language: 'en'
             }
           })
-          .then(result => {
-            $store.dispatch('setUserData', result)
+          .then(row => {
+            localStorage.setItem('language', row.settings.language)
+            $store.dispatch('setUserData', row)
 
-            return result
+            return row
           })
       })
   }

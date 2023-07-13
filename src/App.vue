@@ -6,8 +6,9 @@
 
 <script setup>
 import { defineAsyncComponent } from 'vue';
-import { useUser } from './libs/user';
 import { useRoute } from 'vue-router';
+
+import { useUser } from './libs/user';
 
 const $route = useRoute()
 const $user = useUser()
