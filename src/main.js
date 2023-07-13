@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { useTranslations } from '@/libs/translations'
+import dayjsPlugin from '@/plugins/dayjsPlugin'
 
 const $translations = useTranslations()
 
@@ -22,5 +23,6 @@ $translations
       .use(store)
       .use(router)
       .use(i18n)
+      .use(dayjsPlugin)
       .mount('#app')
   })

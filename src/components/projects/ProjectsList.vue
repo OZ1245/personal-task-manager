@@ -11,7 +11,7 @@
         <ul>
           <li>
             <strong>{{ $t('CREATED') }}:</strong>
-            {{ project.created }}
+            {{ $dayjs(project.created).format('LL') }}
           </li>
         </ul>
         <button type="button" @click="onEditProject(project.id)">Edit</button>
@@ -27,6 +27,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router';
 
+// import dayjs from 'dayjs'
 import { useI18n } from 'vue-i18n'
 import { useProject } from '@/libs/project'
 
