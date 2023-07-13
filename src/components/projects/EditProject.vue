@@ -1,6 +1,9 @@
 <template>
   <h1>Edit project</h1>
-  <form>
+
+  <p v-if="loading">Loading data...</p>
+
+  <form v-if="!loading">
     <label for="">Name</label>
     <input type="text" v-model="form.name">
 
@@ -30,7 +33,7 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import { useProject } from '@/libs/project'
 import { useRoute, useRouter } from 'vue-router';
 
@@ -38,6 +41,7 @@ const $router = useRouter()
 const $route = useRoute()
 const $project = useProject()
 
+const loading = ref(true)
 const form = reactive({
   name: null,
   settings: {
@@ -51,6 +55,7 @@ $project.fetchProject($route.params.id)
   .then(() => {
     form.name = projectData.value.name
     form.settings = projectData.value.settings
+    loading.value = false
   })
 
 const onUpdateProject = () => $project
