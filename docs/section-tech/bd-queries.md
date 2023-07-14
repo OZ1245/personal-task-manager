@@ -125,81 +125,6 @@
 
 ---
 
-## Настройки <a name="settings" id="settings"></a>
-
-### GET GetUserSettings
-
-Получить настройки пользователя
-
-Параметры:
-
-1. **userId** [Integer] Id пользователя
-
-Запрос:
-
-```sql
-SELECT settings FROM users WHERE id = $1
-```
-
-### POST SaveUserSettings
-
-Сохранить настройки пользователя
-
-Параметры:
-
-1. **userId** [Integer] Id пользователя
-2. **settings** [JSON] Настройки
-
-Запрос:
-
-```sql
-UPDATE users SET settings = $2 WHERE id = $1
-```
-
-### POST SaveTemplate
-
-Созхранить шаблон настроек проекта.
-
-Параметры:
-
-1. **userId** [Integer] Id пользователя
-1. **name** [String] Название шаблона
-1. **settings** [JSON] Настройки шаблона
-
-```sql
-INSERT INTO templates (userId, name, settings) VALUES ($1, $2, $3) RETURNING id
-```
-
-### GET GetTemplates
-
-Получить шаблоны настроек проекта.
-
-Параметры:
-
-1. **userId** [Integer] Id пользователя
-
-```sql
-SELECT * FROM templates WHERE id = $1
-```
-
-### POST DeleteTemplate
-
-Удалить шаблон настроек проекта.
-
-Параметры:
-
-1. **templateId** [Integer] Id шаблона
-
-```sql
-DELETE FROM templates WHERE id = $1 
-```
-
----
-
-<a href="#top">К содержанию</a>
-
----
-
 ## Проекты Projects <a name=projects id="projects"></a>
 
 - **Таблица:** public.Project
@@ -302,6 +227,11 @@ TODO:
 
 ## Типы полей FieldsTypes <a name="types" id="types"></a>
 
+- **Таблица:** public.FieldsTypes
+- **Библиотека:** useFieldType() (`/src/libs/fieldType.js`)
+- **API:** `/src/api/fieldTypes.js`
+- **Хранилище:** не используется
+
 ### **Запросить поля** <a name="types-fetch" id="types-fetch"></a>
 
 Запросить все типы полей
@@ -326,6 +256,11 @@ TODO:
 ---
 
 ## Переводы Translations <a name="translations" id="translations"></a>
+
+- **Таблица:** public.Translations
+- **Библиотека:** useTranslations() (`/src/libs/translations.js`)
+- **API:** `/src/api/translations.js`
+- **Хранилище:** не используется
 
 ### **Запросить переводы** <a name="translations-fetch" id="translations-fetch"></a>
 
