@@ -31,7 +31,7 @@
 
 | Название   | Тип        | Значение по-умолчанию | Описание                 |
 |------------|------------|-----------------------|--------------------------|
-| id         | int8       | NULL                  | -                        |
+| id (PK)    | uuid       | NULL                  | -                        |
 | created    | timestampz | now()                 | Дата регистрации         |
 | last_login | timestampz | now()                 | Последний вход в систему |
 | email      | text       | NULL                  | Email                    |
@@ -45,40 +45,40 @@
 
 ## Projects. Проекты <a name="projects" id="projects"></a>
 
-| Название | Тип        | Значение по-умолчанию | Описание          |
-|----------|------------|-----------------------|-------------------|
-| id       | int8       | NULL                  | -                 |
-| created  | timestampz | now()                 | Дата создания     |
-| name     | varchar    | NULL                  | Название          |
-| user_id  | FK         | NULL                  | Владелец          |
-| settings | jsonb      | NULL                  | Настройки проекта |
+| Название     | Тип        | Значение по-умолчанию | Описание               |
+|--------------|------------|-----------------------|------------------------|
+| id (PK)      | int8       | NULL                  | -                      |
+| created      | timestampz | now()                 | Дата создания          |
+| name         | varchar    | NULL                  | Название               |
+| user_id (FK) | uuid       | NULL                  | Владелец -> `Users.id` |
+| settings     | jsonb      | NULL                  | Настройки проекта      |
 
 **settings {Object}:**
 
 - **fields** {Array}:
   - **id** {String} Уникальный id. Формируется из временной метки создания
-  - **filed_type** {String} Id типа поля. Внешний ключ на FieldTypes.id
+  - **filed_type** {String} Id типа поля. Внешний ключ на `FieldTypes.id`
   - **name** {String} Название поля
   - **editable** {Boolean} Редактируемое
   - **multiply** {Boolean} Множественное
   - **default_value** {String} Значение по-умолчанию
-  - **rules** {Array} Набор правил. Внешние ключи на Rules.id
+  - **rules** {Array} Набор правил. Внешние ключи на `Rules.id`
 
 ## Tasks. Задачи <a name="tasks" id="tasks"></a>
 
 Карточки задач
 
-| Название   | Тип        | Значение по-умолчанию | Описание        |
-|------------|------------|-----------------------|-----------------|
-| id         | uuid       | NULL                  | -               |
-| project_id | FK         | NULL                  | Id проекта      |
-| created    | timestampz | now()                 | Дата создания   |
-| modified   | timestampz | NULL                  | Дата изменения  |
-| data       | jsonb      | NULL                  | Данные карточки |
+| Название        | Тип        | Значение по-умолчанию | Описание                    |
+|-----------------|------------|-----------------------|-----------------------------|
+| id (PK)         | uuid       | NULL                  | -                           |
+| project_id (FK) | int8       | NULL                  | Id проекта -> `Projects.id` |
+| created         | timestampz | now()                 | Дата создания               |
+| modified        | timestampz | NULL                  | Дата изменения              |
+| data            | jsonb      | NULL                  | Данные карточки             |
 
 **data {Array}:**
 
-- **field_id** {String} Id поля. Внешний ключ на Projects.settings.fields.id
+- **field_id** {String} Id поля. Внешний ключ на `Projects.settings.fields.id`
 - **value** {*} Значение
 - **created** {String} Временная метка создания
 - **modified** {String} Временная метка последнего изменения
@@ -89,7 +89,7 @@
 
 | Название    | Тип  | Значение по-умолчанию | Описание              |
 |-------------|------|-----------------------|-----------------------|
-| id          | int8 | NULL                  | -                     |
+| id (PK)     | int8 | NULL                  | -                     |
 | name        | text | NULL                  | Название поля         |
 | description | text | NULL                  | Описание поля         |
 | code        | text | NULL                  | Код поля для фронтенд |
@@ -107,12 +107,12 @@
 
 ## Rules. Правила
 
-| Название    | Тип  | Значение по-умолчанию | Описание |
-|-------------|------|-----------------------|----------|
-| id          | uuid | NULL                  | -        |
-| name        | text | NULL                  | Название |
-| description | text | NULL                  | Описание |
-| rule        | text | NULL                  | Правило  |
+| Название    | Тип  | Значение по-умолчанию | Описание                      |
+|-------------|------|-----------------------|-------------------------------|
+| id (PK)     | uuid | NULL                  | -                             |
+| name        | text | NULL                  | Название                      |
+| description | text | NULL                  | Описание                      |
+| rule        | text | NULL                  | Правило. Регулярное выражение |
 
 ## Translations. Переводы <a name="translations" id="translations"></a>
 
@@ -120,7 +120,7 @@
 
 | Название | Тип        | Значение по-умолчанию | Описание              |
 |----------|------------|-----------------------|-----------------------|
-| id       | uuid       | NULL                  | -                     |
+| id (PK)  | uuid       | NULL                  | -                     |
 | created  | timestampz | now()                 | Дата создания         |
 | modified | timestampz | NULL                  | Дата изменения        |
 | constant | text       | NULL                  | Константа фразы       |
