@@ -5,7 +5,7 @@ import router from './router'
 import store from './store'
 import { useTranslations } from '@/libs/translations'
 import dayjsPlugin from '@/plugins/dayjsPlugin'
-// TODO: Плагин для i18n
+import i18nPlugin from './plugins/i18nPlugin'
 
 const $translations = useTranslations()
 
@@ -15,13 +15,15 @@ $translations
     const i18n = createI18n({
       legacy: false,
       locale: data.locale,
-      messages: data.messages
+      globalInjection: true,
+      messages: data.messages,
     })
 
     createApp(App)
       .use(store)
       .use(router)
       .use(i18n)
+      .use(i18nPlugin, i18n)
       .use(dayjsPlugin)
       .mount('#app')
   })

@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ t('HOME_PROJECTS') }}</h1>
+  <h1>{{ $t('HOME_PROJECTS') }}</h1>
 
   <p v-if="loading">Loading data...</p>
 
@@ -27,12 +27,10 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router';
 
-import { useI18n } from 'vue-i18n'
 import { useProject } from '@/libs/project'
 
 const $router = useRouter()
 const $project = useProject()
-const { t } = useI18n()
 
 $project
   .fetchProjects()
