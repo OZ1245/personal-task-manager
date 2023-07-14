@@ -30,15 +30,33 @@
       </ul>
     </li>
     <li>
-      <a href=#projects>Проекты</a>
+      <a href=#tasks>Задачи</a>
       <ul>
-        <li>...
+        <li>TODO:
       </ul>
     </li>
     <li>
-      <a href=#tasks>Задачи</a>
+      <a href=#types>Типы полей</a>
       <ul>
-        <li>...
+        <li><a href="#types-fetch">Запросить поля</a>
+      </ul>
+    </li>
+    <li>
+      <a href=#types>Шаблоны</a>
+      <ul>
+        <li>TODO:
+      </ul>
+    </li>
+    <li>
+      <a href=#translations>Переводы</a>
+      <ul>
+        <li><a href="#translations-fetch">Запросить переводы</a>
+      </ul>
+    </li>
+    <li>
+      <a href=#rules>Правила заполнения</a>
+      <ul>
+        <li>TODO:
       </ul>
     </li>
   </ul>
@@ -272,81 +290,61 @@ DELETE FROM templates WHERE id = $1
 
 ---
 
-## Задачи <a name=tasks id="tasks"></a>
+## Задачи <a name="tasks" id="tasks"></a>
 
-### POST CreateTask
+TODO:
 
-Создать задачу.
+---
 
-Параметры:
+<a href="#top">К содержанию</a>
 
-1. **projectId** [Integer] Id проекта
-1. **data** [JSON] Данные задачи
+---
 
-Запрос:
+## Типы полей FieldsTypes <a name="types" id="types"></a>
 
-```sql
-INSERT INTO tasks (projectId, data) VALUES ($1, $2) 
-```
+### **Запросить поля** <a name="types-fetch" id="types-fetch"></a>
 
-### POST UpdateTask
+Запросить все типы полей
 
-Редактировать задачу.
+- **Метод:** `fetchFieldTypes`
+- **Параметры:** нет
 
-Параметры:
+---
 
-1. **projectId** [Integer] Id проекта
-1. **data** [JSON] Данные задачи
+<a href="#top">К содержанию</a>
 
-Запрос:
+---
 
-```sql
-UPDATE tasks SET data = $2 WHERE projectId = $1 
-```
+## Шаблоны Templates <a name="templates" id="templates"></a>
 
-### GET GetTasks
+TODO:
 
-Получить все задачи из проекта
+---
 
-Параметры:
+<a href="#top">К содержанию</a>
 
-1. **projectId** [Integer] Id проекта
-1. **limit** [Integer] Отграничение вывода
-1. **offset** [Integer] Сдвиг
+---
 
-Запрос:
+## Переводы Translations <a name="translations" id="translations"></a>
 
-```sql
-SELECT * FROM tasks WHERE projectId = $1 ORDER BY created ASC LIMIT $2 OFFSET $3
-```
+### **Запросить переводы** <a name="translations-fetch" id="translations-fetch"></a>
 
-### GET GetTasksByDate
+Запросить все переводы на всех доступных языках
 
-Получить задачи за определенную дату.
+- **Метод:** `fetchTranslations`
+- **Параметры:** нет
 
-Параметры:
+---
 
-1. **projectId** [Integer] Id проекта
-1. **date** [TimestampZ] Дата
+<a href="#top">К содержанию</a>
 
-Запрос:
+---
 
-```sql
-SELECT * FROM tasks WHERE projectId = $1 AND (modified < $2 AND modified > $2) ORDER BY modified
-```
+## TODO: Правила заполнения Rules <a name="rules" id="rules"></a>
 
-### GET GetTasksByPeriod
+---
 
-Получить задачи за период
+<a href="#top">К содержанию</a>
 
-Параметры:
+---
 
-1. **projectId** [Integer] Id проекта
-1. **dateStart** [TimestampZ] Дата начала
-1. **dateEnd** [TimestampZ] Дата конца
-
-Запрос:
-
-```sql
-SELECT * FROM tasks WHERE projectId = $1 AND (modified < $2 AND modified > $3) ORDER BY modified
-```

@@ -1,6 +1,10 @@
 import translationsApi from "@/api/translations"
 
 export function useTranslations() {
+  /**
+   * Запросить все переводы
+   * @returns {Promise} Массив переводов
+   */
   const fetchTranslations = async () => {
     const userLanguage = localStorage.getItem('language')
     const locale = userLanguage ? userLanguage : 'en'
@@ -19,11 +23,11 @@ export function useTranslations() {
         result.map(item => {
           messages.en = {
             ...messages.en,
-            [item.key]: item['lang:en']
+            [item.constant]: item['lang:en']
           }
           messages.ru = {
             ...messages.ru,
-            [item.key]: item['lang:ru']
+            [item.constant]: item['lang:ru']
           }
         })
 
