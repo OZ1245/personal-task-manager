@@ -47,7 +47,7 @@
             <textarea
               :rows="field.rows"
               v-model="field.default_value"
-            />
+            ></textarea>
 
             <br>
 
@@ -61,14 +61,14 @@
           </template>
 
           <div v-if="getFiledCode(field.field_type_id) === 'CHECKBOX'">
-            <!-- TODO: Если будет выбрано множественное, отображать несколько полей -->
+            <input type="text" v-model="field.default_value">
             <input 
+              v-model="field.checked"
               type="checkbox"
               :id="`checkbox-${i}`" 
               :name="`checkbox-${i}`" 
-              v-model="field.default_value"
             > 
-            <label :for="`nested-item-${k}`">
+            <label :for="`checkbox-${i}`">
               Выбрано
             </label>
           </div>
@@ -165,6 +165,7 @@ const defaultData = {
   rows: 3,
   search: false,
   date_now: false,
+  checked: false
 }
 const defaultNestedItem = {
   name: null,
