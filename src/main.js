@@ -7,6 +7,8 @@ import { useTranslations } from '@/libs/translations'
 import dayjsPlugin from '@/plugins/dayjsPlugin'
 import i18nPlugin from './plugins/i18nPlugin'
 
+import './scss/main.scss'
+
 const $translations = useTranslations()
 
 $translations
@@ -15,6 +17,7 @@ $translations
     const i18n = createI18n({
       legacy: false,
       locale: data.locale,
+      fallbackLocale: 'ru',
       globalInjection: true,
       messages: data.messages,
     })

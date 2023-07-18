@@ -1,34 +1,50 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useTemplate } from '@/libs/template.js'
 import projectsApi from '@/api/projects'
 import userApi from '@/api/user'
 
 export function useProject() {
   const $store = useStore()
+  const $template = useTemplate()
 
   /**
    * Создать проект
    * @param {Object} data 
    * @returns {Promise} Данные проекта
    */
-  const createProject = async (data) => {
-    // TODO: Когда будет библиотека для работы с шаблонами
-    // const template = (data.settings)
-    //   ? data.settings
-    //   : defaultTemplate
-    
+  const createProject = async ({ params, saveTemplateOption, templateName }) => {
+    console.log('--- createProject lib method ---')
+    console.log('params:', params)
     return await userApi
       .retrieveUser()
       .then(async user => {
         return await projectsApi
           .insertRow({
-            ...data,
+            ...params,
             user_id: user.id
           })
-          .then(result => {
+          .then(async result => {
             fetchProjects()
+
+            const returnedData = {
+              createProject: result,
+              createTemplate: null
+            }
+
+            if (saveTemplateOption) {
+              await $template
+                .createTemplate({
+                  settings: params.settings,
+                  user_id: user.id,
+                  name: templateName 
+                })
+                .then(result => {
+                  returnedData.createTemplate = result
+                })
+            }
             
-            return result
+            return returnedData
           })
         })
   }
