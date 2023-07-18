@@ -35,17 +35,13 @@ export function useUser() {
   }
 
   const login = async (data) => {
-    console.log(' --- login lib method ---')
     return await userApi
       .signIn(data)
       .then(async result => {
-        console.log('result:', result)
-
         if (result) {
           return await userApi
             .getById(result.user.id)
             .then(async row => {
-              console.log('row:', row)
               if (row.active) {
                 localStorage.setItem('token', result?.session.access_token)
                 $store.dispatch('setUserAuthData', result)
@@ -57,8 +53,6 @@ export function useUser() {
                     result.user.id
                   )
                   .then(result => {
-                    console.log('login result:', result)
-
                     $store.dispatch('setUserData', result)
 
                     $router.push({
@@ -94,8 +88,6 @@ export function useUser() {
   }
 
   const checkSession = async () => {
-    console.log('--- checkSession lib method ---')
-
     return await userApi
       .getSession()
       .then(data => {
@@ -105,12 +97,9 @@ export function useUser() {
   }
 
   const fetchUser = async () => {
-    console.log('--- getUser method ---')
     return await userApi
       .retrieveUser()
       .then(async user => {
-        console.log('user:', user)
-      
         if (!user.id) {
           userApi.signOut()
           
@@ -158,12 +147,9 @@ export function useUser() {
   // FIXME: Наверное нельзя удалить свой же профиль. 
   // Кажется это может только админ БД
   const deleteUser = async () => {
-    console.log('--- deleteUser method ---')
     return await userApi
       .retrieveUser()
       .then(async user => {
-        console.log('user.id:', user.id)
-
         if (!user.id) {
           userApi.signOut()
           return
@@ -176,7 +162,6 @@ export function useUser() {
               return await userApi
                 .deleteById(user.id)
                 .then(result => {
-                  console.log('result:', result)
                   return result
                 })
           //   }

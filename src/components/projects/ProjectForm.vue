@@ -186,16 +186,7 @@ const onAddField = () => {
 }
 
 const onRemoveField = (fieldId) => {
-  console.log('--- onRemoveField method ---')
-    console.log('fieldId:', fieldId)
-  const newArray = deleteFromArray(form.settings.fields, 'id', fieldId)
-  // const newArray = _.remove(form.settings.fields, (_, i) => {
-  //   console.log('i:', i)
-  //   return i === index
-  // })
-
-  // form.settings.fields
-  console.log('newArray:', newArray)
+  deleteFromArray(form.settings.fields, 'id', fieldId)
 }
 
 const getFiledCode = (fieldId) => {

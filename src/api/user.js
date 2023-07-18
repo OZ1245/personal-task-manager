@@ -53,11 +53,9 @@ const getSession = () => {
 }
 
 const deleteUser = async (id) => {
-  console.log('--- deleteUser api method ---')
   return await supabase.auth.admin
     .deleteUser(id)
     .then(({ data, error }) => {
-      console.log('data:', data)
       if (error) throw error
 
       return (!data)
@@ -99,13 +97,11 @@ const updateById = async (params, id) => {
 }
 
 const deleteById = async (id) => {
-  console.log('--- deleteUser api method ---')
   return await supabase
     .from('Users')
     .delete()
     .eq('id', id)
     .then(response => {
-      console.log('response:', response)
       return (response.status === 204)
     })
     .catch(error => {
@@ -141,7 +137,6 @@ const getById = async (id) => {
     .select('*')
     .eq('id', id)
     .then(({ data, error }) => {
-      console.log('data:', data)
       if (error) throw error
 
       return data[0]

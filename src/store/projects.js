@@ -29,11 +29,9 @@ export default {
   },
   actions: {
     setProject({ commit }, data) {
-      console.log('--- setProject action ---')
       commit('SET_PROJECT', data)
     },
     setProjects({ commit }, data) {
-      console.log('--- setProjects action ---')
       commit('SET_PROJECTS', data)
     },
     clearProject({ commit }, id) {

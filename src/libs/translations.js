@@ -12,8 +12,6 @@ export function useTranslations() {
     return await translationsApi
       .readAll()
       .then(async result => {
-        console.log('result:', result)
-
         // TODO: Сообразить систему локалей
         const messages = {
           en: null,
@@ -30,8 +28,6 @@ export function useTranslations() {
             [item.constant]: item['lang:ru']
           }
         })
-
-        console.log('messages:', messages)
 
         return {
           locale: locale,

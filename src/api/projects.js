@@ -114,7 +114,6 @@ const deleteById = (id) => {
     .delete()
     .eq('id', id)
     .then(response => {
-      console.log('response:', response)
       return (response.status === 204)
     })
     .catch(error => {

@@ -14,8 +14,6 @@ export function useProject() {
    * @returns {Promise} Данные проекта
    */
   const createProject = async ({ params, saveTemplateOption, templateName }) => {
-    console.log('--- createProject lib method ---')
-    console.log('params:', params)
     return await userApi
       .retrieveUser()
       .then(async user => {
