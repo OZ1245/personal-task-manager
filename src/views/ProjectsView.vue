@@ -20,7 +20,7 @@ const ProjectsComponents = defineAsyncComponent(() => {
     return import('@/components/projects/EditProject.vue')
   }
 
-  return import('@/components/projects/CreateProject.vue')
+  return import('@/components/projects/ProjectWorkspace.vue')
 })
 
 const onCancel = () => $router.back()

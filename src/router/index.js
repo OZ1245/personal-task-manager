@@ -35,6 +35,21 @@ const routes = [
       auth: true
     }
   },
+  {
+    path: '/projects/:id',
+    name: 'ProjectWorkspace',
+    component: () => import('../views/ProjectsView.vue'),
+    meta: {
+      auth: true,
+      layout: 'Workspace'
+    },
+    children: {
+      // /tasks/create
+      // /tasks/edit
+      // /tasks/:date
+      // /tasks/:date/:id
+    }
+  },
 ]
 
 const router = createRouter({

@@ -1,13 +1,20 @@
 <template>
-  <h1>{{ $t('HOME_PROJECTS') }}</h1>
+  <h2>{{ $t('HOME_PROJECTS') }}</h2>
+  <button type="button" @click="onCreateProject">Create project</button>
 
   <p v-if="loading">Loading data...</p>
 
   <div v-if="!loading">
-    <!-- <pre>{{ projectsList }}</pre> -->
     <ul v-if="projectsList.length">
       <li v-for="(project, i) in projectsList" :key="`project-${i}`">
-        <h2>{{ project.name }}</h2>
+        <router-link :to="{
+          name: 'ProjectWorkspace',
+          params: {
+            id: project.id
+          }
+        }">
+          <h3>{{ project.name }}</h3>
+        </router-link>
         <ul>
           <li>
             <strong>{{ $t('CREATED') }}:</strong>
@@ -15,7 +22,7 @@
           </li>
         </ul>
         <button type="button" @click="onEditProject(project.id)">Edit</button>
-        <button type="button" @click="onDeleteProject(project.id)">Delete</button>
+        <button type="button" @click="onDeleteProject(project.id)">Remove</button>
       </li>
     </ul>  
 
@@ -41,6 +48,10 @@ $project
 const loading = ref(true)
 
 const projectsList = computed(() => $project.getProjects())
+
+const onCreateProject = () => $router.push({
+  name: 'CreateProject'
+})
 
 const onDeleteProject = (id) => {
   if (confirm('You are sure?')) {
