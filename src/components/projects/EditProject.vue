@@ -1,40 +1,28 @@
 <template>
-  <h1>Edit project</h1>
+  <div class="project-settings">
+    <div class="project-settings__header">
+      <h1>Edit project</h1>
 
-  <p v-if="loading">Loading data...</p>
+      <label for="">Name</label>
+      <input type="text" v-model="form.name">
 
-  <!-- <form v-if="!loading">
-    <label for="">Name</label>
-    <input type="text" v-model="form.name">
+      <hr>
+    </div>
 
-    <hr>
+    <div class="project-settings__body">
+      <p v-if="loading">Loading data...</p>
 
-    <h2>Settings</h2>
+      <ProjectForm
+        v-if="!loading"
+        :data="form"
+      />
+    </div>
 
-    <h3>Fields</h3>
-    <template v-if="form.settings.fields.length">
-      <div v-for="(field, i) in form.settings.fields" :key="`settings-field-${i}`">
-        <label for="">Name</label>
-        <input type="text" v-model="field.name">
-
-        <label for="">Editable</label>
-        <input type="checkbox" v-model="field.editable">
-
-        <label for="">Multiply</label>
-        <input type="checkbox" v-model="field.multipty">
-
-        <label for="">Default value</label>
-        <input type="text" v-model="field.default_value">
-      </div>
-    </template>
-
-  </form>   -->
-  <ProjectForm
-    v-if="!loading"
-    :data="form"
-  />
-
-  <button type="button" @click="onUpdateProject">Save</button>
+    <div class="project-settings__footer">
+      <button type="button" @click="onCancel">Cancel</button>
+      <button type="button" @click="onUpdateProject">Save</button>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -59,7 +47,7 @@ const form = reactive({
 
 const projectData = computed(() => $project.getProject())
 
-$project.fetchProject($route.params.id)
+$project.fetchProject($route.params.projectId)
   .then(() => {
     form.name = projectData.value.name
     form.settings = projectData.value.settings
@@ -67,10 +55,12 @@ $project.fetchProject($route.params.id)
   })
 
 const onUpdateProject = () => $project
-  .updateProject(form, $route.params.id)
+  .updateProject(form, $route.params.projectId)
   .then(() => {
     $router.push({
       name: 'Home'
     })
   })
+
+const onCancel = () => $router.back()
 </script>

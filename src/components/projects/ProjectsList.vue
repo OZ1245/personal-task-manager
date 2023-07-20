@@ -10,7 +10,7 @@
         <router-link :to="{
           name: 'ProjectWorkspace',
           params: {
-            id: project.id
+            projectId: project.id
           }
         }">
           <h3>{{ project.name }}</h3>
@@ -63,7 +63,7 @@ const onEditProject = (id) => {
   $router.push({
     name: 'EditProject',
     params: {
-      id
+      projectId: id
     }
   })
 }

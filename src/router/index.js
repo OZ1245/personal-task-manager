@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/HomeView.vue'),
+    component: () => import('@/views/HomeView.vue'),
     meta: {
       auth: true,
       layout: 'Empty'
@@ -14,7 +14,7 @@ const routes = [
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import('../views/AuthView.vue'),
+    component: () => import('@/views/AuthView.vue'),
     meta: {
       auth: false
     }
@@ -22,33 +22,38 @@ const routes = [
   {
     path: '/projects/create',
     name: 'CreateProject',
-    component: () => import('../views/ProjectsView.vue'),
+    component: () => import('@/components/projects/CreateProject.vue'),
     meta: {
       auth: true
     }
   },
   {
-    path: '/projects/edit/:id',
+    path: '/projects/edit/:projectId',
     name: 'EditProject',
-    component: () => import('../views/ProjectsView.vue'),
+    component: () => import('@/components/projects/EditProject.vue'),
     meta: {
       auth: true
     }
   },
   {
-    path: '/projects/:id',
+    path: '/projects/:projectId',
     name: 'ProjectWorkspace',
-    component: () => import('../views/ProjectsView.vue'),
+    component: () => import('@/components/projects/ProjectWorkspace.vue'),
     meta: {
       auth: true,
       layout: 'Workspace'
     },
-    children: {
-      // /tasks/create
-      // /tasks/edit
-      // /tasks/:date
-      // /tasks/:date/:id
-    }
+    children: [
+      {
+        path: 'tasks/create',
+        name: 'CreateTask',
+        component: () => import('@/components/tasks/CreateTask.vue'),
+
+        // tasks/edit
+        // tasks/:date
+        // tasks/:date/:id
+      }
+    ]
   },
 ]
 

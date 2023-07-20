@@ -1,28 +1,42 @@
 <template>
-  <h1>Create project</h1>
+  <div class="project-settings">
+    <div class="project-settings__header">
+      <h1>Create project</h1>
   
-  <ProjectForm
-    :data="form"
-  />
+      <label for="">Name</label>
+      <input type="text" v-model="form.name">
 
-  <input 
-    type="checkbox" 
-    v-model="saveTemplateOption"
-    id="save-template-checkbox"
-  />
-  <label for="save-template-checkbox">
-    Сохранить настройки в шаблон
-  </label>
+      <hr>
+    </div>
 
-  <template v-if="saveTemplateOption">
-    <br>
-    <label>Название шаблона</label>
-    <input type="text" v-model="templateName">
-  </template>
+    <div class="project-settings__body">
+      <ProjectForm
+        :data="form"
+      />
+    </div>
 
-  <br>
+    <div class="project-settings__footer">
+      <input 
+        type="checkbox" 
+        v-model="saveTemplateOption"
+        id="save-template-checkbox"
+      />
+      <label for="save-template-checkbox">
+        Сохранить настройки в шаблон
+      </label>
 
-  <button type="button" @click="onCreateProject">Create</button>
+      <template v-if="saveTemplateOption">
+        <br>
+        <label>Название шаблона</label>
+        <input type="text" v-model="templateName">
+      </template>
+
+      <br>
+
+      <button type="button" @click="onCancel">Cancel</button>
+      <button type="button" @click="onCreateProject">Create</button>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -57,4 +71,6 @@ const onCreateProject = () => $project
       name: 'Home'
     })
   })
+
+const onCancel = () => $router.back()
 </script>

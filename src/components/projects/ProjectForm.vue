@@ -1,10 +1,5 @@
 <template>
   <form>
-    <label for="">Name</label>
-    <input type="text" v-model="form.name">
-
-    <hr>
-
     <h2>Settings</h2>
 
     <h3>Fields</h3>

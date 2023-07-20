@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'common';
 
 * {
   box-sizing: border-box;
@@ -15,4 +16,9 @@ body {
 
   background-color: var(--background);
   color: var(--text-base);
+}
+
+#app {
+  height: 100%;
+  overflow: hidden;
 }
