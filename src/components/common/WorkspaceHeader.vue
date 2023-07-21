@@ -13,6 +13,8 @@
       <h1 class="workspace-header__project-title">
         {{ project?.name }}
       </h1>
+
+      <button type="button" @click="onEditProject()">Edit</button>
     </div>
 
     <div class="workspace-header__right">{{ user?.settings.name || 'User Name' }}</div>
@@ -23,12 +25,19 @@
 import { computed } from 'vue'
 import { useProject } from '@/libs/project'
 import { useUser } from '@/libs/user'
+import { useRouter } from 'vue-router';
 
+const $prouter = useRouter()
 const $user = useUser()
 const $project = useProject()
 
 const project = computed(() => $project.getProject())
 const user = computed(() => $user.getUser())
+
+const onEditProject = () => $prouter.push({
+  name: 'EditProject',
+  projectId: project.value.id
+})
 </script>
 
 <style lang="scss">

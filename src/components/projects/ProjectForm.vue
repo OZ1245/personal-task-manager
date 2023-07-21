@@ -24,8 +24,6 @@
         <br>
 
         <template v-if="field.field_type_id">
-          <input type="hidden" v-model="field.id">
-
           <label for="">Name</label>
           <input type="text" v-model="field.name">
 
@@ -55,7 +53,7 @@
             />
           </template>
 
-          <div v-if="getFiledCode(field.field_type_id) === 'CHECKBOX'">
+          <div v-if="getFiledCode(field.field_type_id) === 'CHECKLIST'">
             <input type="text" v-model="field.default_value">
             <input 
               v-model="field.checked"
@@ -68,7 +66,7 @@
             </label>
           </div>
 
-          <div v-if="getFiledCode(field.field_type_id) === 'SELECT_SIMPLE_TEXT'">
+          <div v-if="getFiledCode(field.field_type_id) === 'SELECT_SIMPLE'">
             <!-- TODO: search prop -->
             <template v-if="field.nested_items.length">
               <div 
@@ -77,13 +75,14 @@
               >
                 <input type="hidden" v-model="item.id">
                 <input type="text" v-model="item.name"/>
-                <input 
+                <input
+                  v-model="field.default_value" 
                   type="radio"
-                  :id="`nested-item-${k}`" 
-                  :name="`select-${field.id}`" 
-                  v-model="item.default"
+                  :id="`nested-item-${field.id}-${k}`" 
+                  :name="field.default_value" 
+                  :value="item.id"
                 > 
-                <label :for="`nested-item-${k}`">
+                <label :for="`nested-item-${field.id}-${k}`">
                   По-умолчанию
                 </label>
                 <button v-if="field.nested_items.length > 1" type="button">Удалить</button>
@@ -112,8 +111,13 @@
 
           <br>
           
-          <input type="checkbox" v-model="field.multipty">
-          <label for="">Multiply</label>
+          <input 
+            v-model="field.multiply"
+            type="checkbox" 
+            :id="`field-${field.id}`"
+            @change="onToggleMultiplyDefaultValue(i)"
+          >
+          <label :for="`field-${field.id}`">Multiply</label>
 
           <br>
           
@@ -122,7 +126,12 @@
         </template>
 
         <button type="button" @click="onRemoveField(field.id)">Delete field</button>
+
+        <br>
+        <br>
       </div>
+
+
     </template>
     <button type="button" @click="onAddField">Add field</button>
   </form>    
@@ -153,7 +162,7 @@ const defaultData = {
   name: null,
   default_value: null,
   editable: true,
-  multipty: false,
+  multiply: false,
   dayly: false,
   rules: null,
   nested_items: [],
@@ -209,5 +218,9 @@ const onAddNestedItem = (index) => {
       ...defaultNestedItem,
     }
   ]
+}
+
+const onToggleMultiplyDefaultValue = (index) => {
+  form.settings.fields[index].default_value = form.settings.fields[index].multiply ? [] : null
 }
 </script>

@@ -9,14 +9,7 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
-import { useProject } from '@/libs/project'
 import WorkspaceHeader from '@/components/common/WorkspaceHeader.vue'
-
-const $route = useRoute()
-const $project = useProject()
-
-$project.fetchProject($route.params.projectId)
 </script>
 
 <style lang="scss">

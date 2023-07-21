@@ -57,9 +57,7 @@ $project.fetchProject($route.params.projectId)
 const onUpdateProject = () => $project
   .updateProject(form, $route.params.projectId)
   .then(() => {
-    $router.push({
-      name: 'Home'
-    })
+    $router.back()
   })
 
 const onCancel = () => $router.back()
