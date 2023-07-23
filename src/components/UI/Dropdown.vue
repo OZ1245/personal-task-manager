@@ -16,12 +16,12 @@
       ]"
       @click="onClick(item)"
     >
-      <slot :item="{ item }">
+      <slot name="items" :item="{ item }">
         {{ item.name }}
       </slot>
     </li>
 
-    <slot name="content"></slot>
+    <slot></slot>
   </ul>
 </template>
 
@@ -117,7 +117,7 @@ const onClickOutside = [
 ]
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dropdown {
   position: absolute;
   z-index: 2;

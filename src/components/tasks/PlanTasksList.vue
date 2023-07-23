@@ -20,22 +20,38 @@
         </Dropdown>
       </div>
     </div>
-    <ul>
-      <li>Task 1</li>
-      <li>Task 2</li>
-    </ul>
+    <template v-if="!loading">
+      <ul v-if="tasksList.length">
+        <li>Task 1</li>
+        <li>Task 2</li>
+      </ul>
+
+      <p v-else>
+        No tasks...
+      </p>
+    </template>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Dropdown from '@/components/UI/Dropdown'
 import { PlusIcon } from '@heroicons/vue/24/outline'
+import { useTask } from '@/libs/task';
 
 const $router = useRouter()
+const $task = useTask()
 
+const props = defineProps({
+  date: {
+    type: String,
+    required: true,
+  }
+})
+
+const loading = ref(true)
 const showAddTaskToPlanDropdown = ref(false)
 const dropdownItems = [
   {
@@ -49,9 +65,9 @@ const dropdownItems = [
     type: 'disabled',
   },
 ]
+const tasksList = ref([])
 
 const onAddTaskToPlan = (event) => {
-  
   if (event.value === 'create') {
     $router.push({
       name: 'CreateTask'
@@ -64,6 +80,15 @@ const onAddTaskToPlan = (event) => {
 
   showAddTaskToPlanDropdown.value = false
 }
+
+watchEffect(() => {
+  $task
+    .fetchTasksByDate(props.date)
+    .then(result => {
+      tasksList.value = result
+      loading.value = false
+    })
+})
 </script>
 
 <style lang="scss">

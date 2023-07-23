@@ -8,6 +8,7 @@ import dayjsPlugin from '@/plugins/dayjsPlugin'
 import i18nPlugin from './plugins/i18nPlugin'
 
 import './scss/main.scss'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const $translations = useTranslations()
 

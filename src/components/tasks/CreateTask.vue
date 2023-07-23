@@ -10,7 +10,7 @@
       <form class="create-task__form">
         <div class="create-task__control">
           <label for="`control-created`">Дата создания:</label>
-          <Datepicker
+          <VueDatepicker
             v-model="created"
             inputFormat="dd.LL.yyyy HH:mm:ss"
             :locale="userLocale"
@@ -170,7 +170,7 @@ import { useFieldType } from '@/libs/fieldType';
 import { useProject } from '@/libs/project';
 import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
-import Datepicker from 'vue3-datepicker'
+import VueDatepicker from '@vuepic/vue-datepicker'
 import * as locales from 'date-fns/locale'
 import { useUser } from '@/libs/user';
 import { useTask } from '@/libs/task';
@@ -188,7 +188,6 @@ const form = ref()
 const fields = ref()
 const created = ref(new Date())
 // TODO: автоматическое подключение локали
-console.log('user:', user)
 const userLocale = (user.settings.language === 'en') ? locales.enUS : locales.ru
 
 $fieldType

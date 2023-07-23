@@ -1,21 +1,58 @@
 <template>
   <aside class="sidebar">
     <div class="sidebar__datepicker">
-      Today
-      <button type="button">
-        <ChevronDownIcon class="sidebar__change-icon"/>
-      </button>
+      {{ $dayjs(date).format('LL') }}
+
+      <DatepickerDropdown
+        v-model="date"
+        @update:model-value="onChangeDate($event)"
+      />
     </div>
 
     <div class="sidebar__task-list">
-      <PlanTasksList/>
+      <PlanTasksList 
+        :date="formattedDate"
+      />
     </div>
   </aside>
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
+import dayjs from 'dayjs';
+import { useRoute, useRouter } from 'vue-router';
+
 import PlanTasksList from '@/components/tasks/PlanTasksList';
-import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+import DatepickerDropdown from '@/components/UI/DatepickerDropdown'
+
+const $router = useRouter()
+const $route = useRoute()
+
+const date = ref(null)
+
+if (dayjs($route.params.date).isSame(dayjs(), 'day', 'month', 'year')) {
+  date.value = new Date()
+} else {
+  date.value = $route.params.date
+}
+const formattedDate = computed(() => {
+  return dayjs(date.value).format('YYYY-MM-DD')
+})
+
+const onChangeDate = (event) => {
+  if (!dayjs(event).isSame(dayjs(), 'day', 'month', 'year')) {
+    $router.push({
+      name: 'ProjectWorkspace',
+      params: {
+        date: event
+      }
+    })
+  } else {
+    $router.push({
+      name: 'ProjectWorkspace'
+    })
+  }
+}
 </script>
 
 <style lang="scss">
@@ -24,9 +61,9 @@ import { ChevronDownIcon } from '@heroicons/vue/24/outline'
   border-right: 1px solid var(--border);
   padding: var(--inner-padding-block) var(--inner-padding-inline);
 }
-.sidebar__change-icon {
-  width: var(--icon-size);
-  height: var(--icon-size);
-  color: var(--background);
+.sidebar__datepicker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

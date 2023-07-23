@@ -3,15 +3,16 @@ import { useUser } from './user'
 import { computed } from 'vue'
 
 export function useTask() {
-  // const $store = useStore()
   const $user = useUser()
 
   const userId = computed(() => $user.getUser()).value.id
 
+  /**
+   * Создать задачу
+   * @param {Array} params Значение полей
+   * @returns {Object} Данные задачи
+   */
   const createTask = async (params) => {
-    console.log('--- createTask lib method ---')
-    console.log('params:', params)
-
     return await tasksApi
       .insertRow({
         created: params.created,
@@ -19,12 +20,21 @@ export function useTask() {
         project_id: params.projectId,
         user_id: userId
       })
-      .then(result => {
-        return result
+      .then(response => {
+        return response
+      })
+  }
+
+  const fetchTasksByDate = async (date) => {
+    return await tasksApi
+      .readRowsByDate([date])
+      .then(response => {
+        return response
       })
   }
 
   return {
-    createTask
+    createTask,
+    fetchTasksByDate
   }
 }

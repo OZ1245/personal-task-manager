@@ -92,7 +92,7 @@
           </div>
 
           <div v-if="getFiledCode(field.field_type_id) === 'DATE'">
-            <Datepicker
+            <VueDatepicker
               v-if="!field.date_now"
               v-model="field.default_value"
             />
@@ -154,7 +154,7 @@ import * as _ from 'lodash'
 import { deleteFromArray } from '@/utils/index.js' 
 import { defineProps, reactive, ref } from 'vue'
 
-import Datepicker from 'vue3-datepicker'
+import VueDatepicker from '@vuepic/vue-datepicker'
 
 import { useFieldType } from '@/libs/fieldType'
 

@@ -55,6 +55,15 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/projects/:projectId/:date?',
+    name: 'ProjectWorkspace',
+    component: () => import('@/components/projects/ProjectWorkspace.vue'),
+    meta: {
+      auth: true,
+      layout: 'Workspace'
+    }
+  }
 ]
 
 const router = createRouter({
