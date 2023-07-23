@@ -6,11 +6,19 @@
     </div>
 
     <div class="sidebar__task-list">
-      <TasksList/>
+      <PlanTasksList/>
     </div>
   </aside>
 </template>
 
 <script setup>
-import TasksList from '@/components/tasks/TasksList.vue';
+import PlanTasksList from '@/components/tasks/PlanTasksList.vue';
 </script>
+
+<style lang="scss">
+.sidebar {
+  width: 250px;
+  border-right: 1px solid gray;
+  padding: 16px;
+}
+</style>
