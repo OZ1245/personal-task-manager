@@ -114,16 +114,27 @@
           <input 
             v-model="field.multiply"
             type="checkbox" 
-            :id="`field-${field.id}`"
+            :id="`field-${i}-multiply`"
             @change="onToggleMultiplyDefaultValue(i)"
           >
-          <label :for="`field-${field.id}`">Multiply</label>
+          <label :for="`field-${i}-multiply`">Multiply</label>
 
           <br>
           
           <input type="checkbox" v-model="field.dayly">
           <label for="">Ежедневное</label>
+          
+          <br>
+          
+          <input 
+            v-model="field.show_on_create"
+            type="checkbox" 
+            :id="`field-${i}-on-create`"
+          >
+          <label :for="`field-${i}-on-create`">Показывать при создании</label>
         </template>
+
+        <br>
 
         <button type="button" @click="onRemoveField(field.id)">Delete field</button>
 
@@ -169,7 +180,8 @@ const defaultData = {
   rows: 3,
   search: false,
   date_now: false,
-  checked: false
+  checked: false,
+  show_on_create: true,
 }
 const defaultNestedItem = {
   name: null,

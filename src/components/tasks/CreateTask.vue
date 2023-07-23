@@ -21,9 +21,9 @@
         <div
           v-for="(field, i) in fields"
           :key="`field-${i}`" 
+          v-show="field.show_on_create"
           class="create-task__control"
         >
-          
           <label :for="`control-${field.id}`">{{ field.name }}:</label>
 
           <template v-if="field.code === 'INPUT_TEXT'">
