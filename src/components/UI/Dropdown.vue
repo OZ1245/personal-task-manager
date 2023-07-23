@@ -14,7 +14,7 @@
         { 'dropdown__item--link' : item.type && item.type.includes('link') },
         { 'dropdown__item--disabled': item.type && item.type.includes('disabled') },
       ]"
-      @click="onClick(item.modelValue)"
+      @click="onClick(item)"
     >
       <slot :item="{ item }">
         {{ item.name }}
@@ -126,10 +126,10 @@ const onClickOutside = [
   width: 200px;
   overflow-y: auto;
 
-  padding: 16px 12px;
+  padding: var(--inner-padding-inline) var(--inner-padding-block);
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--border-radius);
 
   cursor: default;
 
@@ -183,8 +183,10 @@ const onClickOutside = [
   }
 
   &--link {
+    color: var(--accent);
+
     &:hover {
-      color: var(--accent);
+      color: var(--contrast);
       cursor: pointer;
     }
   }

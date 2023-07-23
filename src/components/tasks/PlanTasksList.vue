@@ -9,7 +9,7 @@
           class="plan-tasks-list__button"
           @click="showAddTaskToPlanDropdown = true"
         >
-          +
+          <PlusIcon class="plan-task-list__button-icon"/>
         </button>
         <Dropdown
           v-model="showAddTaskToPlanDropdown"
@@ -28,9 +28,11 @@
 </template>
 
 <script setup>
-import Dropdown from '@/components/UI/Dropdown'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import Dropdown from '@/components/UI/Dropdown'
+import { PlusIcon } from '@heroicons/vue/24/outline'
 
 const $router = useRouter()
 
@@ -49,15 +51,14 @@ const dropdownItems = [
 ]
 
 const onAddTaskToPlan = (event) => {
-  console.log(event)
-
+  
   if (event.value === 'create') {
     $router.push({
       name: 'CreateTask'
     })
   }
 
-  if (event.value === 'create') {
+  if (event.value === 'add') {
     // TODO:
   }
 
@@ -74,5 +75,10 @@ const onAddTaskToPlan = (event) => {
 }
 .plan-tasks-list__button-wapper {
   position: relative;
+}
+.plan-task-list__button-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  color: var(--background);
 }
 </style>
