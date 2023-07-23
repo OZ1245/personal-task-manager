@@ -78,12 +78,42 @@
             </option>
           </select>
 
-          <textarea 
-            v-if="field.code === 'TEXTAREA'"
-            v-model="form[i].value"
-            :id="`control-${field.id}`" 
-            :rows="field.rows"
-          ></textarea>
+          <template v-if="field.code === 'TEXTAREA'">
+            <template v-if="field.multiply">
+              <template v-if="form[i].value.length">
+                <div
+                  v-for="(item, j) in form[i].value"
+                  :key="`textarea-item-${field.id}-${j}`"
+                >
+                  <textarea 
+                    v-model="form[i].value[j].value"
+                    :id="`control-${field.id}`" 
+                    :rows="field.rows"
+                  ></textarea>
+
+                  <button 
+                    type="button"
+                    @click="onRemoveFiledItem(i, j)"
+                  >
+                    Remove item
+                  </button>
+                </div> 
+              </template>
+
+              <button 
+                type="button"
+                @click="onAddFiledItem(i)"
+              >
+                Add item
+              </button>
+            </template>
+            <textarea 
+              v-else
+              v-model="form[i].value"
+              :id="`control-${field.id}`" 
+              :rows="field.rows"
+            ></textarea>
+          </template>
 
           <template v-if="field.code === 'CHECKLIST'">
             <template v-if="form[i].value.length">
