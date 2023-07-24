@@ -9,15 +9,17 @@ export function useTask() {
 
   /**
    * Создать задачу
-   * @param {Array} params Значение полей
-   * @returns {Object} Данные задачи
+   * @param {String} created Дата создания задачи в формате PostgreSQL timestampz
+   * @param {Object} data Данные задачи
+   * @param {Integer} projectId Id проекта
+   * @returns {Promise} Данные задачи
    */
-  const createTask = async (params) => {
+  const createTask = async ({ created, data, projectId }) => {
     return await tasksApi
       .insertRow({
-        created: params.created,
-        data: params.data,
-        project_id: params.projectId,
+        created: created,
+        data: data,
+        project_id: projectId,
         user_id: userId
       })
       .then(response => {
@@ -25,6 +27,11 @@ export function useTask() {
       })
   }
 
+  /**
+   * Поиск поставленных задач на определенную дату
+   * @param {String} date Дата в PostgreSQL date. Формат: YYYY-MM-DD 
+   * @returns {Promise} Результаты поиска
+   */
   const fetchTasksByDate = async (date) => {
     return await tasksApi
       .readRowsByDate([date])
@@ -33,8 +40,28 @@ export function useTask() {
       })
   }
 
+  /**
+   * Добавить задачу в план
+   * @param {Integer} id Id задачи 
+   * @param {Array} history История добавления в план 
+   * @returns {Promise} Результат добавления
+   */
+  const addTaskToPlan = async ({ id, history }) => {
+    return await tasksApi
+      .updateById({
+        id,
+        params: {
+          history
+        }
+      })
+      .then(response => {
+        return response
+      })
+  }
+
   return {
     createTask,
-    fetchTasksByDate
+    fetchTasksByDate,
+    addTaskToPlan,
   }
 }

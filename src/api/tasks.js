@@ -39,7 +39,30 @@ const readRowsByDate = (params) => {
     })
 }
 
+/**
+ * Обновить задачу
+ * @param {Integer} id Id задачи
+ * @param {Object} params Параметры полей
+ * @returns 
+ */
+const updateById = ({ id, params }) => {
+  return supabase
+    .from('Tasks')
+    .update(params)
+    .eq('id', id)
+    .select()
+    .then(({ data, error }) => {
+      if (error) throw error
+
+      return data
+    })
+    .catch(error => {
+      throw error.message
+    })
+}
+
 export default {
   insertRow,
   readRowsByDate,
+  updateById,
 }

@@ -82,7 +82,6 @@ const readByUserId = (userId) => {
 
 /**
  * Обновить запись
- * @param {Object} Пареметры: 
  * @param {Object} params Данные для вставки 
  * @param {Integer} id Id записи 
  * @returns 
