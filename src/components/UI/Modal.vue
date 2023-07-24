@@ -174,6 +174,7 @@ const onClose = () => {
   background-color: var(--background);
   border: 1px solid var(--border);
   border-radius: var(--border-radius);
+  backdrop-filter: drop-shadow(0 0 15px back);
 }
 
 .modal__header {
