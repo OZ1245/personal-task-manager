@@ -1,11 +1,16 @@
 <template>
   <Modal 
     v-model="show"
+    max-width="800px"
+    top
+    title="Добавить задачу в план"
     @close="onClose()"
   >
-    <div class="tasks-list">
-      TODO
-    </div>
+    <template #body>
+      <div class="tasks-list">
+        TODO
+      </div>
+    </template>
   </Modal>
 </template>
 

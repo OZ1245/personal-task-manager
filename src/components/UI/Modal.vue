@@ -4,11 +4,19 @@
     <div 
       v-show="props.modelValue" 
       class="modal"
+      :class="[
+        { 'modal--top': position === 'top' },
+        { 'modal--center': position === 'center' },
+      ]"
     >
       <div class="modal__backdrop"></div>
 
       <transition name="modal-animation-inner">
         <div class="modal__inner">
+          <!-- Default -->
+          <slot></slot>
+
+          <!-- Header -->
           <slot name="header">
             <div
               v-if="props.showHeader" 
@@ -21,19 +29,18 @@
                 {{ title }}
               </h2>
 
-              <button 
-                type="button"
+              <XMarkIcon 
+                v-if="showCloseIcon"
+                class="modal__close-icon"
                 @click="onClose()"
-              >
-                <XMarkIcon 
-                  v-if="showCloseIcon"
-                  class="modal__close-icon"
-                />
-              </button>
+              />
             </div>
           </slot>
 
-          <slot></slot>
+          <!-- Body -->
+          <div class="modal__body">
+            <slot name="body"></slot>
+          </div>
         </div>
       </transition>
     </div>
@@ -41,7 +48,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, computed } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
@@ -64,6 +71,33 @@ const props = defineProps({
     required: false,
     default: ''
   },
+  maxWidth: {
+    type: String,
+    required: false,
+    default: '640px'
+  },
+  top: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  center: {
+    type: Boolean,
+    required: false,
+    default: true
+  }
+})
+
+const position = computed(() => {
+  if (props.top) {
+    return 'top'
+  }
+
+  if (props.center) {
+    return 'center'
+  }
+
+  return 'center'
 })
 
 const emit = defineEmits(['close', 'update:modelValue'])
@@ -106,12 +140,21 @@ const onClose = () => {
 .modal {
   display: flex;
   justify-content: center;
-  align-items: center;
   height: 100vh;
   width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
+
+  padding: 50px;
+
+  &--top {
+    align-items: flex-start;
+  }
+
+  &--center {
+    align-items: center;
+  }
 }
 
 .modal__backdrop {
@@ -126,22 +169,29 @@ const onClose = () => {
 
 .modal__inner {
   position: relative;
-  max-width: 640px;
-  width: 80%;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  background-color: #fff;
-  padding: 64px 16px;
-
-  i {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-
-    &:hover {
-      color: crimson;
-    }
-  }
+  max-width: v-bind(maxWidth);
+  width: 100%;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
 }
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding: var(--inner-padding-block) var(--inner-padding-inline);
+}
+
+.modal__close-icon {
+  width: var(--icon-size-big);
+  height: var(--icon-size-big);
+  color: var(--text-base);
+}
+
+.modal__body {
+  padding: var(--inner-padding-block) var(--inner-padding-inline);
+}
+
 </style>
