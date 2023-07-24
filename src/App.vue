@@ -6,11 +6,14 @@
   >
     Loading...
   </div>
+
+  <ModalWrapper/>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import IndexLayout from '@/layouts/IndexLayout.vue';
+import ModalWrapper from '@/components/UI/Modal.vue'
 
 import { useUser } from '@/libs/user';
 

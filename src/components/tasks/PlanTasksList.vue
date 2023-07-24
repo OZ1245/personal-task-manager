@@ -32,15 +32,21 @@
       </p>
     </template>
   </div>
+
+  <TasksListModal
+    v-model="showTasksListModal"
+    @close="showTasksListModal = false"
+  ></TasksListModal>
 </template>
 
 <script setup>
 import { ref, defineProps, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import { useTask } from '@/libs/task'
 
 import Dropdown from '@/components/UI/Dropdown'
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import { useTask } from '@/libs/task';
+import TasksListModal from '@/components/tasks/TasksListModal.vue';
 
 const $router = useRouter()
 const $task = useTask()
@@ -63,10 +69,11 @@ const dropdownItems = [
   {
     name: 'Add Task from List',
     value: 'add',
-    type: 'disabled',
+    type: 'link',
   },
 ]
 const tasksList = ref([])
+const showTasksListModal = ref(false)
 
 const onAddTaskToPlan = (event) => {
   if (event.value === 'create') {
@@ -77,6 +84,7 @@ const onAddTaskToPlan = (event) => {
 
   if (event.value === 'add') {
     // TODO:
+    showTasksListModal.value = true
   }
 
   showAddTaskToPlanDropdown.value = false
