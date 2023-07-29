@@ -28,30 +28,23 @@ import DatepickerDropdown from '@/components/UI/DatepickerDropdown'
 const $router = useRouter()
 const $route = useRoute()
 
-const date = ref(null)
+const date = ref(dayjs())
 
-if (dayjs($route.params.date).isSame(dayjs(), 'day', 'month', 'year')) {
-  date.value = new Date()
-} else {
+if ($route.params.date) {
   date.value = $route.params.date
 }
+
 const formattedDate = computed(() => {
   return dayjs(date.value).format('YYYY-MM-DD')
 })
 
 const onChangeDate = (event) => {
-  if (!dayjs(event).isSame(dayjs(), 'day', 'month', 'year')) {
-    $router.push({
-      name: 'ProjectWorkspace',
-      params: {
-        date: event
-      }
-    })
-  } else {
-    $router.push({
-      name: 'ProjectWorkspace'
-    })
-  }
+  $router.push({
+    name: 'ProjectWorkspace',
+    params: {
+      date: dayjs(event).format('YYYY-MM-DD')
+    }
+  })
 }
 </script>
 

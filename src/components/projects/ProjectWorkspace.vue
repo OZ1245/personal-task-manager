@@ -10,14 +10,25 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useProject } from '@/libs/project'
 import TasksSidebar from '@/components/tasks/TasksSidebar.vue'
+import dayjs from 'dayjs';
 
+const $router = useRouter()
 const $route = useRoute()
 const $project = useProject()
 
 const loading = ref(true)
+
+if (!$route.params.date) {
+  $router.push({
+    name: 'ProjectWorkspace',
+    params: {
+      date: dayjs().format('YYYY-MM-DD')
+    }
+  })
+}
 
 $project
   .fetchProject($route.params.projectId)

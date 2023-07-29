@@ -1,12 +1,8 @@
 <template>
-  <div class="create-task">
-    <div class="create-task__header">
-      <h3 class="create-task__title">
-        Create Task
-      </h3>
-    </div>
-
-    <div class="create-task__body">
+  <TaskAreaComponent
+    title="Create Task"
+  >
+    <template #body>
       <form class="create-task__form">
         <div class="create-task__control">
           <label for="`control-created`">Дата создания:</label>
@@ -146,9 +142,9 @@
           </template>
         </div>
       </form>
-    </div>
+    </template>
 
-    <div class="create-task__footer">
+    <template #footer>
       <button 
         type="button"
         @click="onCancel()"
@@ -161,20 +157,23 @@
       >
         Create
       </button>
-    </div>
-  </div>
+    </template>
+  </TaskAreaComponent>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router';
+import dayjs from 'dayjs'
+import * as locales from 'date-fns/locale'
+
 import { useFieldType } from '@/libs/fieldType';
 import { useProject } from '@/libs/project';
-import { ref, computed } from 'vue'
-import dayjs from 'dayjs'
-import VueDatepicker from '@vuepic/vue-datepicker'
-import * as locales from 'date-fns/locale'
 import { useUser } from '@/libs/user';
 import { useTask } from '@/libs/task';
-import { useRouter } from 'vue-router';
+
+import TaskAreaComponent from '@/components/tasks/TaskAreaComponent.vue';
+import VueDatepicker from '@vuepic/vue-datepicker'
 
 const $router = useRouter()
 const $project = useProject()
@@ -257,8 +256,5 @@ const onCreate = () => {
 </script>
 
 <style lang="scss">
-.create-task__body {
-  overflow-y: scroll;
-  flex-grow: 1;
-}
+
 </style>

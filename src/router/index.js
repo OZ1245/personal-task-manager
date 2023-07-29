@@ -36,7 +36,7 @@ const routes = [
     }
   },
   {
-    path: '/projects/:projectId',
+    path: '/projects/:projectId/:date?',
     name: 'ProjectWorkspace',
     component: () => import('@/components/projects/ProjectWorkspace.vue'),
     meta: {
@@ -46,24 +46,16 @@ const routes = [
     children: [
       {
         path: 'tasks/create',
-        name: 'CreateTask',
+        name: 'Project.CreateTask',
         component: () => import('@/components/tasks/CreateTask.vue'),
-
-        // tasks/edit
-        // tasks/:date
-        // tasks/:date/:id
+      },
+      {
+        path: 'tasks/add',
+        name: 'Project.AddTasks',
+        component: () => import('@/components/tasks/AddTasks.vue'),
       }
     ]
   },
-  {
-    path: '/projects/:projectId/:date?',
-    name: 'ProjectWorkspace',
-    component: () => import('@/components/projects/ProjectWorkspace.vue'),
-    meta: {
-      auth: true,
-      layout: 'Workspace'
-    }
-  }
 ]
 
 const router = createRouter({

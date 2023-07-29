@@ -32,11 +32,6 @@
       </p>
     </template>
   </div>
-
-  <TasksListModal
-    v-model="showTasksListModal"
-    @close="showTasksListModal = false"
-  ></TasksListModal>
 </template>
 
 <script setup>
@@ -46,7 +41,7 @@ import { useTask } from '@/libs/task'
 
 import Dropdown from '@/components/UI/Dropdown'
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import TasksListModal from '@/components/tasks/TasksListModal.vue';
+import dayjs from 'dayjs';
 
 const $router = useRouter()
 const $task = useTask()
@@ -55,6 +50,7 @@ const props = defineProps({
   date: {
     type: String,
     required: true,
+    default: dayjs().format('YYYY-MM-DD')
   }
 })
 
@@ -73,22 +69,24 @@ const dropdownItems = [
   },
 ]
 const tasksList = ref([])
-const showTasksListModal = ref(false)
 
 const onAddTaskToPlan = (event) => {
   if (event.value === 'create') {
     $router.push({
-      name: 'CreateTask'
+      name: 'Project.CreateTask'
     })
   }
 
   if (event.value === 'add') {
-    // TODO:
-    showTasksListModal.value = true
+    $router.push({
+      name: 'Project.AddTasks',
+    })
   }
 
   showAddTaskToPlanDropdown.value = false
 }
+
+console.log('props.date:', props.date)
 
 watchEffect(() => {
   $task
