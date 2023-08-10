@@ -11,8 +11,9 @@
       :key="`item-${i}`"
       class="dropdown__item"
       :class="[
-        { 'dropdown__item--link' : item.type && item.type.includes('link') },
-        { 'dropdown__item--disabled': item.type && item.type.includes('disabled') },
+        { 'dropdown__item--link' : item.type && item.type === 'link' },
+        { 'dropdown__item--item' : item.type && item.type === 'item' },
+        { 'dropdown__item--disabled': item.type && item.type === 'disabled' },
       ]"
       @click="onClick(item)"
     >
@@ -172,7 +173,7 @@ const onClickOutside = [
 
 .dropdown__item {
   font-weight: 400;
-  font-size: 14px;
+  font-size: var(--font-size-xs);
   line-height: 16px;
   text-align: left;
 
@@ -184,6 +185,15 @@ const onClickOutside = [
 
   &--link {
     color: var(--accent);
+
+    &:hover {
+      color: var(--contrast);
+      cursor: pointer;
+    }
+  }
+
+  &--item {
+    color: var(--text-base);
 
     &:hover {
       color: var(--contrast);

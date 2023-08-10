@@ -4,7 +4,6 @@
     class="add-tasks"
   >
     <template #body>
-      <!-- <pre>{{ taskList }}</pre> -->
       <ul
         v-if="taskList.length" 
         class="add-tasks__list"
@@ -14,7 +13,6 @@
           :key="`task-${i}`"
           class="add-tasks__item"
         >
-          <pre>{{ task }}</pre>
           <ul>
             <li
               v-for="(field, j) in task.data"
@@ -33,6 +31,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import dayjs from 'dayjs';
 
 import { useTask } from '@/libs/task';
 
@@ -48,25 +47,32 @@ $task
     taskList.value = result
       .map(item => {
         console.log('result:', result)
+        // FIXME: Ввести константы для полей. Не брать названия за основу.
         return {
           ...item,
-          data: item.data
-            .reduce((result, j) => {
-              if ([
-                'Название',
-                'Номер задачи',
-                'Приоритет',
-                'Статус',
-              ].includes(j.name)) {
-                // console.log('item:', item)
-                return [
-                  ...result,
-                  j
-                ]
-              } else {
-                return result
-              }
-            }, [])
+          data: [
+            {
+              name: 'Дата создания',
+              value: dayjs(item.created).format('LL')
+            },
+            ...item.data
+              .reduce((result, j) => {
+                if ([
+                  'Название',
+                  'Номер задачи',
+                  'Приоритет',
+                  'Статус',
+                ].includes(j.name)) {
+                  // console.log('item:', item)
+                  return [
+                    ...result,
+                    j
+                  ]
+                } else {
+                  return result
+                }
+              }, [])
+          ]
         }
       })
   })

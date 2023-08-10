@@ -1,5 +1,5 @@
 <template>
-  <div class="tasks">
+  <div class="task-area-component">
     <div class="task-area-component__header">
       <slot name="header">
         <h3 class="task-area-component__title">{{ props.title }}</h3>
@@ -29,8 +29,17 @@ const props = defineProps({
 </script>
 
 <style lang="scss">
+.task-area-component__header {
+  padding-inline: var(--inner-padding-inline);
+  padding-block: var(--inner-padding-block);
+}
 .task-area-component__body {
   overflow-y: auto;
   flex-grow: 1;
+  padding-inline: var(--inner-padding-inline);
+}
+.task-area-component__footer {
+  padding-inline: var(--inner-padding-inline);
+  padding-block: var(--inner-padding-block);
 }
 </style>

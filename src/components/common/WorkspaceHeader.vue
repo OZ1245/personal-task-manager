@@ -21,6 +21,7 @@
             projectId: project?.id
           }
         }"
+        title="Settings"
       >
         <Cog6ToothIcon class="workspace-header__settings-icon"/>
       </router-link>
@@ -48,15 +49,25 @@ const user = computed(() => $user.getUser())
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding-inline: var(--inner-padding-inline);
+  padding-block: var(--inner-padding-block);
+  border-bottom: 1px solid var(--border);
 }
 .workspace-header__left {
   display: inline-flex;
   align-items: center;
+  gap: var(--inner-padding-inline);
 }
 .workspace-header__back-icon {
   width: var(--icon-size-big);
   height: var(--icon-size-big);
   color: var(--text-base);
+}
+.workspace-header__project-title {
+  font-weight: 500;
+  font-size: 22px;
+  margin: 0;
 }
 .workspace-header__settings-icon {
   width: var(--icon-size-big);

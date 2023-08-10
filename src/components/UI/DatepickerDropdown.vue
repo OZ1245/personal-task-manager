@@ -1,12 +1,12 @@
 <template>
   <div class="datepicker-dropdown">
-    <button 
-      type="button"
+    <ButtonIcon 
+      :icon="buttonIcon" 
       ref="dropdownTrigger"
+      big
+      class="datepicker-dropdown__trigger"
       @click="show = !show"
-    >
-      <ChevronDownIcon class="datepicker-dropdown__trigger-icon"/>
-    </button>
+    />
 
     <Dropdown
       v-model="show"
@@ -24,10 +24,10 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, defineProps } from 'vue';
+import { ref, defineEmits, defineProps, computed } from 'vue';
 import VueDatepicker from '@vuepic/vue-datepicker'
 import Dropdown from '@/components/UI/Dropdown'
-import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+import ButtonIcon from '@/components/UI/ButtonIcon.vue';
 
 const props = defineProps({
   modelValue: {
@@ -38,9 +38,11 @@ const props = defineProps({
 })
 
 const date = ref(props.modelValue)
+const show = ref(false)
+
+const buttonIcon = computed(() => (!show.value ? 'ChevronDown' : 'ChevronUp'))
 
 const emit = defineEmits(['update:modelValue'])
-const show = ref(false)
 
 const onChangeDate = (event) => {
   show.value = false
@@ -52,10 +54,8 @@ const onChangeDate = (event) => {
 .datepicker-dropdown {
   position: relative;
 }
-.datepicker-dropdown__trigger-icon {
-  width: var(--icon-size);
-  height: var(--icon-size);
-  color: var(--background);
+.datepicker-dropdown__trigger {
+  color: var(--text-base);
 }
 .datepicker-dropdown .dropdown {
   width: auto;

@@ -1,7 +1,9 @@
 <template>
   <aside class="sidebar">
     <div class="sidebar__datepicker">
-      {{ $dayjs(date).format('LL') }}
+      <time class="sidebar__date">
+        {{ $dayjs(date).format('LL') }}
+      </time>
 
       <DatepickerDropdown
         v-model="date"
@@ -58,5 +60,12 @@ const onChangeDate = (event) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: var(--inner-padding-inline);
+}
+.sidebar__date {
+  font-size: var(--font-size-s);
+}
+.sidebar__task-list {
+  padding-block: var(--inner-padding-block);
 }
 </style>

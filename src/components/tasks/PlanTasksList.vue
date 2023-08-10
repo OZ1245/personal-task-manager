@@ -3,14 +3,13 @@
     <div class="plan-tasks-list__header">
       <h2 class="plan-tasks-list__title">Tasks list</h2>
       <div class="plan-tasks-list__button-wapper">
-        <button 
+        <ButtonIcon 
+          icon="Plus"
           ref="addTaskToPlanButton"
-          type="button" 
+          big
           class="plan-tasks-list__button"
           @click="showAddTaskToPlanDropdown = true"
-        >
-          <PlusIcon class="plan-task-list__button-icon"/>
-        </button>
+        />
         <Dropdown
           v-model="showAddTaskToPlanDropdown"
           :items="dropdownItems"
@@ -40,7 +39,7 @@ import { useRouter } from 'vue-router';
 import { useTask } from '@/libs/task'
 
 import Dropdown from '@/components/UI/Dropdown'
-import { PlusIcon } from '@heroicons/vue/24/outline'
+import ButtonIcon from '@/components/UI/ButtonIcon'
 import dayjs from 'dayjs';
 
 const $router = useRouter()
@@ -60,12 +59,12 @@ const dropdownItems = [
   {
     name: 'Create New Task',
     value: 'create',
-    type: 'link'
+    type: 'item'
   },
   {
     name: 'Add Task from List',
     value: 'add',
-    type: 'link',
+    type: 'item',
   },
 ]
 const tasksList = ref([])
@@ -104,13 +103,18 @@ watchEffect(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  margin-bottom: var(--inner-padding-block);
+}
+.plan-tasks-list__title {
+  font-size: var(--font-size-b);
+  font-weight: 500;
+  margin: 0;
 }
 .plan-tasks-list__button-wapper {
   position: relative;
 }
-.plan-task-list__button-icon {
-  width: var(--icon-size);
-  height: var(--icon-size);
-  color: var(--background);
+.plan-tasks-list__button {
+  color: var(--text-base);
 }
 </style>
