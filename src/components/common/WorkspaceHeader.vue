@@ -50,14 +50,14 @@ const user = computed(() => $user.getUser())
   justify-content: space-between;
   align-items: center;
 
-  padding-inline: var(--inner-padding-inline);
-  padding-block: var(--inner-padding-block);
-  border-bottom: 1px solid var(--border);
+  padding-inline: var(--padding-inline);
+  padding-block: var(--padding-block);
+  border-bottom: 1px solid var(--border-color);
 }
 .workspace-header__left {
   display: inline-flex;
   align-items: center;
-  gap: var(--inner-padding-inline);
+  gap: var(--padding-inline);
 }
 .workspace-header__back-icon {
   width: var(--icon-size-big);

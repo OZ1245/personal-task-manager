@@ -23,6 +23,11 @@
 
         <br>
 
+        <label>Constant name</label>
+        <input type="text" v-model="field.constant"/>
+
+        <br>
+
         <template v-if="field.field_type_id">
           <label for="">Name</label>
           <input type="text" v-model="field.name">
@@ -182,6 +187,7 @@ const defaultData = {
   date_now: false,
   checked: false,
   show_on_create: true,
+  constant: null,
 }
 const defaultNestedItem = {
   name: null,

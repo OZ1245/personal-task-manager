@@ -1,20 +1,29 @@
 :root {
+  // Colors
   --background: #1A1A1A;
-  --border: #e7e7e7;
+  --border-color: #e7e7e7;
   --accent: #BF3604;
   --contrast: #F27405;
   --darkest: #590202;
   --text-base: #e7e7e7;
   --text-disabled: #8b8888;
 
+  --success: #3CA32C;
+  --info: #3452A3;
+  --neutral: #999797;
+  --danger: #A31513;
+  --warning: #B3AB02;
+
+  // Block styles
   --border-radius: 6px;
-  --inner-padding-inline: 16px;
-  --inner-padding-block: 12px;
+  --padding-inline: 16px;
+  --padding-block: 12px;
   --icon-size: 16px;
   --icon-size-big: 24px;
 
+  // Font styles
   --font-size-b: 20px;
-  --font-size-n: 18px;
+  --font-size-m: 18px;
   --font-size-s: 16px;
   --font-size-xs: 14px;
 }

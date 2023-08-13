@@ -3,12 +3,12 @@ import { useUser } from './user'
 import { computed } from 'vue'
 import { useProject } from './project'
 import { mapKeys } from 'lodash'
-import { useFieldType } from './fieldType'
+// import { useStore } from 'vuex'
 
 export function useTask() {
+  // const $store = useStore()
   const $user = useUser()
   const $project = useProject()
-  const $fieldType = useFieldType()
 
   const userId = computed(() => $user.getUser()).value.id
 
@@ -38,11 +38,51 @@ export function useTask() {
    * @returns {Promise} Результаты поиска
    */
   const fetchTasksByDate = async (date) => {
+    const projectsFields = $project
+      .getProject()
+      .settings
+      .fields
+
     return await tasksApi
       .readRowsByHistoryDate([date])
-      .then(response => response)
+      .then(response => {
+        return response
+          .map(task => {
+            return {
+              ...task,
+              data: task
+                .data
+                .reduce((result, item) => {
+                  const projectField = projectsFields
+                    .find(({ id }) => {
+                      return id === item.id
+                    })
+                  
+                  const field = {
+                    ...projectField,
+                    ...item,
+                    _value: (projectField.nested_items.length)
+                      ? projectField
+                        .nested_items
+                        .find(({ id }) => id === item.value)
+                        .name
+                      : item.value
+                  }
+
+                  return {
+                    ...result,
+                    [field.constant]: field
+                  }
+                }, {})
+            }
+          })
+      })
   }
 
+  /**
+   * Получить незавершенные задачи
+   * @returns {Promise} Список задач с подробными данными
+   */
   const fetchUncompletedTasks = async () => {
     const projectsFields = $project
       .getProject()
@@ -64,65 +104,51 @@ export function useTask() {
         field_value: fieldValue
       })
       .then(async response => {
-        return await $fieldType
-          .fetchFieldTypes()
-          .then(() => {
-
-            const keyMap = {
-              id: 'id',
-              created: 'created',
-              modified: 'modified',
-              history: 'history',
-              data: 'data',
-              project_id: 'project_id',
-              user_id: 'user_id',
-              value: 'result'
-            }
-            
-            return response
-              .map(item => {
-                return mapKeys(item, (_, key) => {
-                  return keyMap[key]
-                })
-              })
-              .map(item => {
-                return {
-                  ...item,
-                  data: item.data
-                    .reduce((result, _item) => {
-                      
-                      const fieldData = projectsFields
-                      .find(field => field.id === _item.id)
-                      
-                      const fieldTypeData = $fieldType.getFieldTypeById(fieldData.field_type_id)
-                      
-                      // console.log('_item:', _item)
-                      // console.log('fieldData:', fieldData)
-                      // console.log('fieldTypeData:', fieldTypeData)
-
-                      let value = null
-
-                      if (fieldTypeData.code === 'INPUT_TEXT') {
-                        value = _item.value
-                      }
-
-                      if (fieldTypeData.code === 'SELECT_SIMPLE') {
-                        value = fieldData
-                          .nested_items
-                          .find(item => item.id === _item.value)
-                          .name
-                      }
-                      
-                      return [
-                        ...result,
-                        {
-                          name: fieldData.name,
-                          value: value
-                        }
-                      ]
-                    }, [])
-                }
+        const keyMap = {
+          id: 'id',
+          created: 'created',
+          modified: 'modified',
+          history: 'history',
+          data: 'data',
+          project_id: 'project_id',
+          user_id: 'user_id',
+          value: 'result'
+        }
+        
+        return response
+          .map(item => {
+            return mapKeys(item, (_, key) => {
+              return keyMap[key]
             })
+          })
+          .map(task => {
+            return {
+              ...task,
+              data: task
+                .data
+                .reduce((result, item) => {
+                  const projectField = projectsFields
+                    .find(({ id }) => {
+                      return id === item.id
+                    })
+                  
+                  const field = {
+                    ...projectField,
+                    ...item,
+                    _value: (projectField.nested_items.length)
+                      ? projectField
+                        .nested_items
+                        .find(({ id }) => id === item.value)
+                        .name
+                      : item.value
+                  }
+
+                  return {
+                    ...result,
+                    [field.constant]: field
+                  }
+                }, {})
+            }
           })
         })
   } 

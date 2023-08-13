@@ -52,20 +52,25 @@ const onChangeDate = (event) => {
 
 <style lang="scss">
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-block);
+
   width: 250px;
-  border-right: 1px solid var(--border);
-  padding: var(--inner-padding-block) var(--inner-padding-inline);
+  border-right: 1px solid var(--border-color);
+  padding: var(--padding-block) var(--padding-inline);
 }
 .sidebar__datepicker {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--inner-padding-inline);
+  gap: var(--padding-inline);
 }
 .sidebar__date {
   font-size: var(--font-size-s);
 }
 .sidebar__task-list {
-  padding-block: var(--inner-padding-block);
+  flex-grow: 1;
+  height: 100%;
 }
 </style>

@@ -30,16 +30,16 @@ const props = defineProps({
 
 <style lang="scss">
 .task-area-component__header {
-  padding-inline: var(--inner-padding-inline);
-  padding-block: var(--inner-padding-block);
+  padding-inline: var(--padding-inline);
+  padding-block: var(--padding-block);
 }
 .task-area-component__body {
   overflow-y: auto;
   flex-grow: 1;
-  padding-inline: var(--inner-padding-inline);
+  padding-inline: var(--padding-inline);
 }
 .task-area-component__footer {
-  padding-inline: var(--inner-padding-inline);
-  padding-block: var(--inner-padding-block);
+  padding-inline: var(--padding-inline);
+  padding-block: var(--padding-block);
 }
 </style>

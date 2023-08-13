@@ -1,12 +1,17 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+
 import { useTemplate } from '@/libs/template.js'
+import { useUser } from '@/libs/user'
+
 import projectsApi from '@/api/projects'
-import userApi from '@/api/user'
 
 export function useProject() {
   const $store = useStore()
   const $template = useTemplate()
+  const $user = useUser()
+
+  const userId = computed(() => $user.getUser()).value.id
 
   /**
    * Создать проект
@@ -14,37 +19,33 @@ export function useProject() {
    * @returns {Promise} Данные проекта
    */
   const createProject = async ({ params, saveTemplateOption, templateName }) => {
-    return await userApi
-      .retrieveUser()
-      .then(async user => {
-        return await projectsApi
-          .insertRow({
-            ...params,
-            user_id: user.id
-          })
-          .then(async result => {
-            fetchProjects()
+    return await projectsApi
+      .insertRow({
+        ...params,
+        user_id: userId
+      })
+      .then(async result => {
+        fetchProjects()
 
-            const returnedData = {
-              createProject: result,
-              createTemplate: null
-            }
+        const returnedData = {
+          createProject: result,
+          createTemplate: null
+        }
 
-            if (saveTemplateOption) {
-              await $template
-                .createTemplate({
-                  settings: params.settings,
-                  user_id: user.id,
-                  name: templateName 
-                })
-                .then(result => {
-                  returnedData.createTemplate = result
-                })
-            }
-            
-            return returnedData
-          })
-        })
+        if (saveTemplateOption) {
+          await $template
+            .createTemplate({
+              settings: params.settings,
+              user_id: userId,
+              name: templateName 
+            })
+            .then(result => {
+              returnedData.createTemplate = result
+            })
+        }
+        
+        return returnedData
+      })
   }
 
   /**
@@ -75,16 +76,12 @@ export function useProject() {
    * @returns {Promise} Список проектов
    */
   const fetchProjects = async () => {
-    return await userApi
-      .retrieveUser()
-      .then(async user => {
-        return await projectsApi
-          .readByUserId(user.id)
-          .then(result => {
-            $store.dispatch('setProjects', result)
+    return await projectsApi
+      .readByUserId(userId)
+      .then(result => {
+        $store.dispatch('setProjects', result)
 
-            return result
-          })
+        return result
       })
   }
 
@@ -102,23 +99,19 @@ export function useProject() {
    * @returns {Promise} Обновленные данные
    */
   const updateProject = async (data, id) => {
-    return await userApi
-      .retrieveUser()
-      .then(async user => {
-        return await projectsApi
-          .updateById(
-            {
-              ...data,
-              user_id: user.id
-            },
-            id
-          )
-          .then(result => {
-            fetchProjects()
-            $store.dispatch('setProject', result)
+    return await projectsApi
+      .updateById(
+        {
+          ...data,
+          user_id: userId
+        },
+        id
+      )
+      .then(result => {
+        fetchProjects()
+        $store.dispatch('setProject', result)
 
-            return result
-          })
+        return result
       })
   }
 
@@ -143,16 +136,12 @@ export function useProject() {
    * @returns {Promise} true
    */
   const deleteProjects = async () => {
-    return await userApi
-      .retrieveUser()
-      .then(async user => {
-        return await projectsApi
-          .deleteByUserId(user.id)
-          .then(result => {
-            $store.dispatch('clearProjects', user.id)
+    return await projectsApi
+      .deleteByUserId(userId)
+      .then(result => {
+        $store.dispatch('clearProjects', userId)
 
-            return result
-          })
+        return result
       })
   }
 

@@ -127,9 +127,9 @@ const onClickOutside = [
   width: 200px;
   overflow-y: auto;
 
-  padding: var(--inner-padding-inline) var(--inner-padding-block);
+  padding: var(--padding-inline) var(--padding-block);
   background: var(--background);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
 
   cursor: default;

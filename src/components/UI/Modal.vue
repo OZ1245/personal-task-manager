@@ -172,7 +172,7 @@ const onClose = () => {
   max-width: v-bind(maxWidth);
   width: 100%;
   background-color: var(--background);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   backdrop-filter: drop-shadow(0 0 15px back);
 }
@@ -181,8 +181,8 @@ const onClose = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--border);
-  padding: var(--inner-padding-block) var(--inner-padding-inline);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--padding-block) var(--padding-inline);
 }
 
 .modal__close-icon {
@@ -192,7 +192,7 @@ const onClose = () => {
 }
 
 .modal__body {
-  padding: var(--inner-padding-block) var(--inner-padding-inline);
+  padding: var(--padding-block) var(--padding-inline);
 }
 
 </style>

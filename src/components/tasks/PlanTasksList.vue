@@ -20,10 +20,11 @@
       </div>
     </div>
     <template v-if="!loading">
-      <ul v-if="tasksList.length">
-        <!-- TODO: -->
-        <li>Task 1</li>
-        <li>Task 2</li>
+      <ul 
+        v-if="tasksList.length"
+        class="plan-tasks-list__list"
+      >
+        <pre>{{ tasksList }}</pre>
       </ul>
 
       <p v-else>
@@ -34,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watchEffect } from 'vue';
+import { ref, defineProps, watchEffect, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTask } from '@/libs/task'
 
@@ -44,6 +45,7 @@ import dayjs from 'dayjs';
 
 const $router = useRouter()
 const $task = useTask()
+const $bus = inject('bus')
 
 const props = defineProps({
   date: {
@@ -72,39 +74,51 @@ const tasksList = ref([])
 const onAddTaskToPlan = (event) => {
   if (event.value === 'create') {
     $router.push({
-      name: 'Project.CreateTask'
+      name: 'Project.CreateTask',
+      params: {
+        date: props.date
+      }
     })
   }
 
   if (event.value === 'add') {
     $router.push({
       name: 'Project.AddTasks',
+      params: {
+        date: props.date
+      }
     })
   }
 
   showAddTaskToPlanDropdown.value = false
 }
 
-console.log('props.date:', props.date)
+const fetchTasks = () => $task
+  .fetchTasksByDate(props.date)
+  .then(result => {
+    tasksList.value = result
+    loading.value = false
+  })
 
-watchEffect(() => {
-  $task
-    .fetchTasksByDate(props.date)
-    .then(result => {
-      tasksList.value = result
-      loading.value = false
-    })
-})
+watchEffect(fetchTasks)
+
+$bus.on('updatedTaskList', fetchTasks)
 </script>
 
 <style lang="scss">
-// .plan-tasks-list {}
+.plan-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-block);
+
+  height: 100%;
+}
+
+// Header
 .plan-tasks-list__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin-bottom: var(--inner-padding-block);
 }
 .plan-tasks-list__title {
   font-size: var(--font-size-b);
@@ -116,5 +130,11 @@ watchEffect(() => {
 }
 .plan-tasks-list__button {
   color: var(--text-base);
+}
+
+// List
+.plan-tasks-list__list {
+  flex-grow: 1;
+  overflow-y: auto;
 }
 </style>

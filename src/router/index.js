@@ -36,7 +36,7 @@ const routes = [
     }
   },
   {
-    path: '/projects/:projectId/:date?',
+    path: '/projects/:projectId/:date?/',
     name: 'ProjectWorkspace',
     component: () => import('@/components/projects/ProjectWorkspace.vue'),
     meta: {
