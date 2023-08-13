@@ -24,7 +24,7 @@
         v-if="tasksList.length"
         class="plan-tasks-list__list"
       >
-        <pre>{{ tasksList }}</pre>
+        <!-- <pre>{{ tasksList }}</pre> -->
       </ul>
 
       <p v-else>

@@ -49,6 +49,7 @@
               title="Remove"
               big
               warning
+              @click="onRemoveTaskFromPlan(task.id)"
             />
             <ButtonIcon
               icon="Pencil"
@@ -72,13 +73,14 @@
 <script setup>
 import { ref, inject } from 'vue'
 import { reduce } from 'lodash'
-import ButtonIcon from '@/components/UI/ButtonIcon.vue'
+import dayjs from 'dayjs'
+import { deleteFromArray } from '@/utils/index.js' 
 
+import { useRoute } from 'vue-router'
 import { useTask } from '@/libs/task'
 
 import TaskAreaComponent from '@/components/tasks/TaskAreaComponent.vue'
-import dayjs from 'dayjs'
-import { useRoute } from 'vue-router'
+import ButtonIcon from '@/components/UI/ButtonIcon.vue'
 
 const $route = useRoute()
 const $task = useTask()
@@ -86,33 +88,44 @@ const $bus = inject('bus')
 
 const taskList = ref([])
 
-$task
-  .fetchUncompletedTasks()
-  .then(result => {
-    taskList.value = result
-      .map(item => {
-        return {
-          ...item,
-          data: {
-            ...reduce(item.data, (result, j) => {
-                if ([
-                  'NAME',
-                  'TASK_NUMBER',
-                  'PRIORITY',
-                  'STATUS',
-                ].includes(j.constant)) {
-                  return {
-                    ...result,
-                    [j.constant]: j._value
+const fetchTaskList = () => {
+  $task
+    .fetchUncompletedTasks()
+    .then(result => {
+      taskList.value = result
+        .map(item => {
+          return {
+            ...item,
+            data: {
+              ...reduce(item.data, (result, j) => {
+                  if ([
+                    'NAME',
+                    'TASK_NUMBER',
+                    'PRIORITY',
+                    'STATUS',
+                  ].includes(j.constant)) {
+                    return {
+                      ...result,
+                      [j.constant]: j._value
+                    }
+                  } else {
+                    return result
                   }
-                } else {
-                  return result
-                }
-              }, {})
+                }, {})
+            }
           }
-        }
-      })
-  })
+        })
+    })
+}
+
+fetchTaskList()
+
+const checkTaskHistory = (id) => {
+  const task = taskList.value
+    .find(task => task.id === id)
+
+  return (task.history.find(item => item === dayjs($route.params.date).format('YYYY-MM-DD')))
+}
 
 const onAddTaskToPlan = (id, history) => {
   $task
@@ -125,16 +138,30 @@ const onAddTaskToPlan = (id, history) => {
     })
     .then(data => {
       if (data) {
+        fetchTaskList()
         $bus.emit('updatedTaskList')
       }
     })
 }
 
-const checkTaskHistory = (id) => {
+const onRemoveTaskFromPlan = (id) => {
   const task = taskList.value
     .find(task => task.id === id)
 
-  return (task.history.find(item => item === dayjs($route.params.date).format('YYYY-MM-DD')))
+  $task
+    .addTaskToPlan({
+      id,
+      history: deleteFromArray(
+        task.history,
+        dayjs($route.params.date).format('YYYY-MM-DD')
+      )
+    })
+    .then(data => {
+      if (data) {
+        fetchTaskList()
+        $bus.emit('updatedTaskList')
+      }
+    })
 }
 </script>
 

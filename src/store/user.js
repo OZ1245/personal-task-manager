@@ -22,10 +22,10 @@ export default {
     REMOVE_PROJECT(state, id) {
       state.project = null
 
-      deleteFromArray(state.projects, 'id', id)
+      deleteFromArray(state.projects, id, 'id')
     },
     REMOVE_PROJECTS(state, id) {
-      deleteFromArray(state.projects, 'id', id)
+      deleteFromArray(state.projects, id, 'id')
     }
   },
   actions: {

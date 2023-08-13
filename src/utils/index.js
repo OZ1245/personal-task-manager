@@ -1,7 +1,13 @@
-const deleteFromArray = (array, prop, value) => {
+const deleteFromArray = (array, value, prop) => {
   array.forEach((element, i) => {
-    if (element[prop] === value) {
-      array.splice(i, 1)
+    if (typeof prop !== 'undefined') {
+      if (element[prop] === value) {
+        array.splice(i, 1)
+      }
+    } else {
+      if (element === value) {
+        array.splice(i, 1)
+      }
     }
   })
 

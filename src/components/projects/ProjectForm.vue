@@ -209,7 +209,7 @@ const onAddField = () => {
 }
 
 const onRemoveField = (fieldId) => {
-  deleteFromArray(form.settings.fields, 'id', fieldId)
+  deleteFromArray(form.settings.fields, fieldId, 'id')
 }
 
 const getFiledCode = (fieldId) => {
