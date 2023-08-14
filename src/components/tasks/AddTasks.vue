@@ -20,17 +20,17 @@
             </time>
 
             <h4 class="add-tasks__title">
-              <strong>{{ task.data.TASK_NUMBER }}:</strong> 
-              {{ task.data.NAME }}
+              <strong>{{ task.data.TASK_NUMBER._value }}:</strong> 
+              {{ task.data.NAME._value }}
             </h4>
 
             <div class="add-tasks__info">
               <p class="add-tasks__priority">
                 <strong>Приоритет:</strong>
-                {{ task.data.PRIORITY }}
+                {{ task.data.PRIORITY._value }}
               </p>
               <label class="add-tasks__status">
-                {{ task.data.STATUS }}
+                {{ task.data.STATUS._value }}
               </label>
             </div>
           </div>
@@ -72,7 +72,6 @@
 
 <script setup>
 import { ref, inject } from 'vue'
-import { reduce } from 'lodash'
 import dayjs from 'dayjs'
 import { deleteFromArray } from '@/utils/index.js' 
 
@@ -93,28 +92,6 @@ const fetchTaskList = () => {
     .fetchUncompletedTasks()
     .then(result => {
       taskList.value = result
-        .map(item => {
-          return {
-            ...item,
-            data: {
-              ...reduce(item.data, (result, j) => {
-                  if ([
-                    'NAME',
-                    'TASK_NUMBER',
-                    'PRIORITY',
-                    'STATUS',
-                  ].includes(j.constant)) {
-                    return {
-                      ...result,
-                      [j.constant]: j._value
-                    }
-                  } else {
-                    return result
-                  }
-                }, {})
-            }
-          }
-        })
     })
 }
 
@@ -163,6 +140,8 @@ const onRemoveTaskFromPlan = (id) => {
       }
     })
 }
+
+$bus.on('updatedUncompletedTasks', fetchTaskList)
 </script>
 
 <style lang="scss">
@@ -219,12 +198,11 @@ const onRemoveTaskFromPlan = (id) => {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 6px 4px;
+  padding: 4px;
   background-color: var(--success);
   border-radius: var(--border-radius);
 
   font-size: var(--font-size-xs);
-  line-height: 0;
   color: var(--background);
 }
 

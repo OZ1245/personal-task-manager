@@ -106,11 +106,16 @@ const emit = defineEmits(['click'])
 <style lang="scss" scoped>
 .button-icon {
   display: inline-flex;
+  justify-content: center;
   align-items: center;
+
   background: none;
   border: none;
   padding: 0;
+
   cursor: pointer;
+  
+  color: var(--text-base);
 
   &:hover {
     color: var(--accent);
