@@ -2,6 +2,7 @@
   <button
     class="button-icon"
     :class="className"
+    :disabled="loading"
     @click="emit('click')"
   >
     <component 
@@ -130,7 +131,11 @@ const emit = defineEmits(['click'])
   
   color: var(--text-base);
 
-  &:hover {
+  &:disabled {
+    color: var(--text-disabled);
+  }
+
+  &:hover:not(:disabled) {
     color: var(--accent);
   }
 }
@@ -152,7 +157,11 @@ const emit = defineEmits(['click'])
   padding: 4px;
   border-radius: var(--border-radius);
 
-  &:hover {
+  &:disabled {
+    background-color: var(--neutral);
+  }
+
+  &:hover:not(:disabled) {
     filter: brightness(1.2);
   }
   &:active {
@@ -163,7 +172,7 @@ const emit = defineEmits(['click'])
   background-color: var(--neutral);
   color: var(--background);
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--background);
   }
 }
@@ -171,7 +180,7 @@ const emit = defineEmits(['click'])
   background-color: var(--info);
   color: var(--text-base);
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--text-base);
   }
 }
@@ -179,7 +188,7 @@ const emit = defineEmits(['click'])
   background-color: var(--warning);
   color: var(--background);
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--background);
   }
 }
@@ -187,7 +196,7 @@ const emit = defineEmits(['click'])
   background-color: var(--danger);
   color: var(--text-base);
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--text-base);
   }
 }
@@ -195,11 +204,14 @@ const emit = defineEmits(['click'])
   background-color: var(--success);
   color: var(--text-base);
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--text-base);
   }
 }
 
+.button-icon--loading {
+  color: var(--text-base) !important;
+}
 .button-icon--loading svg {
   animation: circle .8s linear infinite;
 }

@@ -51,6 +51,7 @@
             <ButtonIcon
               icon="XMark"
               title="Remove"
+              :loading="loadingControls"
               medium
               warning
               class="task__button"
@@ -119,6 +120,7 @@ const dropdownItems = [
   },
 ]
 const tasksList = ref([])
+let loadingControls = ref(false)
 
 const onAddTaskToPlan = (event) => {
   if (event.value === 'create') {
@@ -143,6 +145,8 @@ const onAddTaskToPlan = (event) => {
 }
 
 const onRemoveTask = (id) => {
+  loadingControls.value = true
+
   const task = tasksList.value
     .find(task => task.id === id)
 
@@ -156,6 +160,7 @@ const onRemoveTask = (id) => {
       })
       .then(data => {
         if (data) {
+          loadingControls.value = false
           fetchTasks()
           $bus.emit('updatedUncompletedTasks')
         }
