@@ -39,6 +39,7 @@
               v-show="!checkTaskHistory(task.id)"
               icon="Check"
               title="Add"
+              :loading="loadingTasksButtons"
               big
               success
               @click="onAddTaskToPlan(task.id, task.history)"
@@ -47,6 +48,7 @@
               v-show="checkTaskHistory(task.id)"
               icon="XMark"
               title="Remove"
+              :loading="loadingTasksButtons"
               big
               warning
               @click="onRemoveTaskFromPlan(task.id)"
@@ -86,6 +88,7 @@ const $task = useTask()
 const $bus = inject('bus')
 
 const taskList = ref([])
+let loadingTasksButtons = ref(false)
 
 const fetchTaskList = () => {
   $task
@@ -105,16 +108,19 @@ const checkTaskHistory = (id) => {
 }
 
 const onAddTaskToPlan = (id, history) => {
+  loadingTasksButtons.value = true
+
   $task
     .addTaskToPlan({
       id,
       history: [
         ...history,
-        dayjs($route.date).format('YYYY-MM-DD')
+        dayjs($route.params.date).format('YYYY-MM-DD')
       ]
     })
     .then(data => {
       if (data) {
+        loadingTasksButtons.value = false
         fetchTaskList()
         $bus.emit('updatedTaskList')
       }
@@ -122,6 +128,8 @@ const onAddTaskToPlan = (id, history) => {
 }
 
 const onRemoveTaskFromPlan = (id) => {
+  loadingTasksButtons.value = true
+
   const task = taskList.value
     .find(task => task.id === id)
 
@@ -135,6 +143,7 @@ const onRemoveTaskFromPlan = (id) => {
     })
     .then(data => {
       if (data) {
+        loadingTasksButtons.value = false
         fetchTaskList()
         $bus.emit('updatedTaskList')
       }

@@ -60,9 +60,18 @@ const props = defineProps({
     required: false,
     default: false
   },
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
 })
 
 const Icon = computed(() => {
+  if (props.loading) {
+    return Icons['ArrowPathIcon']
+  }
+
   return Icons[`${props.icon}Icon`]
 })
 
@@ -95,6 +104,10 @@ const className = computed(() => {
 
   if (props.success) {
     className += ' button-icon--success'
+  }
+
+  if (props.loading) { 
+    className += ' button-icon--loading'
   }
 
   return className
@@ -184,6 +197,20 @@ const emit = defineEmits(['click'])
 
   &:hover {
     color: var(--text-base);
+  }
+}
+
+.button-icon--loading svg {
+  animation: circle .8s linear infinite;
+}
+
+@keyframes circle {
+  0%{
+    transform:rotate(0deg);
+  
+  }
+  100%{
+    transform:rotate(360deg);
   }
 }
 </style>
