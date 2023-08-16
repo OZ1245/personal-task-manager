@@ -16,7 +16,8 @@ const routes = [
     name: 'Auth',
     component: () => import('@/views/AuthView.vue'),
     meta: {
-      auth: false
+      auth: false,
+      layout: 'Empty'
     }
   },
   {

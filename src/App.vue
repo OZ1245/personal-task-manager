@@ -1,9 +1,11 @@
 <template>
   <IndexLayout v-if="!loading"/>
+
   <div 
     v-else
     class="app-loader"
   >
+    <ArrowPathIcon class="app-loader__icon"/>
     Loading...
   </div>
 
@@ -12,8 +14,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import IndexLayout from '@/layouts/IndexLayout.vue';
+import IndexLayout from '@/layouts/IndexLayout.vue'
 import ModalWrapper from '@/components/UI/Modal.vue'
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
 
 import { useUser } from '@/libs/user';
 
@@ -34,11 +37,23 @@ $user.checkSession()
 </script>
 
 <style lang="scss">
+@import '@/scss/mixins';
+
 .app-loader {
-  width: 100%;
-  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: var(--padding-block);
+
+  width: 100%;
+  height: 100%;
+}
+.app-loader__icon {
+  @include circle-animation(1.2s);
+
+  width: calc(var(--icon-size-big) * 2);
+  height: calc(var(--icon-size-big) * 2);
+  
 }
 </style>
