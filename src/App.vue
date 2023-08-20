@@ -1,39 +1,61 @@
 <template>
-  <IndexLayout v-if="!loading"/>
-
   <div 
-    v-else
+    v-if="loading"
     class="app-loader"
-  >
+    >
     <ArrowPathIcon class="app-loader__icon"/>
     Loading...
   </div>
+
+  <component :is="layoutIs"> 
+    <router-view /> 
+  </component>
 
   <ModalWrapper/>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import IndexLayout from '@/layouts/IndexLayout.vue'
+import { markRaw, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useUser } from '@/libs/user';
+
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import ModalWrapper from '@/components/UI/Modal.vue'
 import { ArrowPathIcon } from '@heroicons/vue/24/outline'
 
-import { useUser } from '@/libs/user';
-
+const $route = useRoute()
 const $user = useUser()
 
 const loading = ref(true)
+const layoutIs = ref()
 
 $user.checkSession()
   .then(result => {
     if (result) {
       $user
         .fetchUser()
-        .then(() => {
-          loading.value = false
+        .then(data => {
+          console.log('data:', data)
         })
+    } else {
+      $user.logout()
     }
+      
+    loading.value = false
   })
+
+watch(
+  () => $route.meta?.layout,
+  async (layout) => {
+    try {
+      const component = layout && await import(`@/layouts/${layout}Layout.vue`)
+      layoutIs.value = markRaw(component?.default || DefaultLayout)
+    } catch (e) {
+      layoutIs.value = markRaw(DefaultLayout)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss">

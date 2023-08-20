@@ -3,10 +3,10 @@ import { supabase } from '@/libs/supabase'
 const signUp = async (params) => {
   return await supabase.auth
     .signUp(params)
-    .then(({ data, error }) => {
-      if (error) throw error
+    .then((response) => {
+      // if (error) throw error
 
-      return data
+      return response
     })
     .catch(error => {
       throw error.message
@@ -16,10 +16,10 @@ const signUp = async (params) => {
 const signIn = async (params) => {
   return await supabase.auth
     .signInWithPassword(params)
-    .then(({ data, error }) => {
-      if (error) throw error
+    .then((response) => {
+      // if (error) throw error
 
-      return data
+      return response
     })
     .catch(error => {
       throw error.message

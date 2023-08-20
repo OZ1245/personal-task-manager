@@ -1,20 +1,17 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <button
     :type="props.type"
-    class="button-icon"
+    class="button"
     :class="className"
     :disabled="loading"
     @click="emit('click')"
   >
-    <component 
-      :is="Icon" 
-      class="button-icon__icon"
-    />
+    <slot></slot>
   </button>
 </template>
 
 <script setup>
-import * as Icons from '@heroicons/vue/24/outline'
 import { defineProps, defineEmits, computed } from 'vue'
 
 const props = defineProps({
@@ -22,10 +19,6 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'button'
-  },
-  icon: {
-    type: String,
-    required: true,
   },
   medium: {
     type: Boolean,
@@ -66,50 +59,47 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false
-  }
-})
-
-const Icon = computed(() => {
-  if (props.loading) {
-    return Icons['ArrowPathIcon']
-  }
-
-  return Icons[`${props.icon}Icon`]
+  },
+  width: {
+    type: String,
+    required: false,
+    default: 'auto'
+  },
 })
 
 const className = computed(() => {
   let className = ''
 
   if (props.medium) {
-    className += ' button-icon--medium'
+    className += ' button--medium'
   }
 
   if (props.big) {
-    className += ' button-icon--big'
+    className += ' button--big'
   }
 
   if (props.neutral) {
-    className += ' button-icon--neutral'
+    className += ' button--neutral'
   }
 
   if (props.info) {
-    className += ' button-icon--info'
+    className += ' button--info'
   }
 
   if (props.warning) {
-    className += ' button-icon--warning'
+    className += ' button--warning'
   }
 
   if (props.danger) {
-    className += ' button-icon--danger'
+    className += ' button--danger'
   }
 
   if (props.success) {
-    className += ' button-icon--success'
+    className += ' button--success'
   }
 
   if (props.loading) { 
-    className += ' button-icon--loading'
+    className += ' button--loading'
   }
 
   return className
@@ -119,10 +109,12 @@ const emit = defineEmits(['click'])
 </script>
 
 <style lang="scss" scoped>
-.button-icon {
+.button {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+
+  width: v-bind('props.width');
 
   background: none;
   border: none;
@@ -141,20 +133,18 @@ const emit = defineEmits(['click'])
   }
 }
 
-.button-icon--medium .button-icon__icon  {
-  width: var(--icon-size);
-  height: var(--icon-size);
+.button--medium  {
+  height: 40px;
 }
-.button-icon--big .button-icon__icon  {
-  width: var(--icon-size-big);
-  height: var(--icon-size-big);
+.button--big  {
+  height: 40px;
 }
 
-.button-icon--neutral,
-.button-icon--info,
-.button-icon--warning,
-.button-icon--danger,
-.button-icon--success {
+.button--neutral,
+.button--info,
+.button--warning,
+.button--danger,
+.button--success {
   padding: 4px;
   border-radius: var(--border-radius);
 
@@ -169,7 +159,7 @@ const emit = defineEmits(['click'])
     filter: brightness(0.8);
   }
 }
-.button-icon--neutral {
+.button--neutral {
   background-color: var(--neutral);
   color: var(--background);
 
@@ -177,7 +167,7 @@ const emit = defineEmits(['click'])
     color: var(--background);
   }
 }
-.button-icon--info {
+.button--info {
   background-color: var(--info);
   color: var(--text-base);
 
@@ -185,7 +175,7 @@ const emit = defineEmits(['click'])
     color: var(--text-base);
   }
 }
-.button-icon--warning {
+.button--warning {
   background-color: var(--warning);
   color: var(--background);
 
@@ -193,7 +183,7 @@ const emit = defineEmits(['click'])
     color: var(--background);
   }
 }
-.button-icon--danger {
+.button--danger {
   background-color: var(--danger);
   color: var(--text-base);
 
@@ -201,7 +191,7 @@ const emit = defineEmits(['click'])
     color: var(--text-base);
   }
 }
-.button-icon--success {
+.button--success {
   background-color: var(--success);
   color: var(--text-base);
 
@@ -210,10 +200,10 @@ const emit = defineEmits(['click'])
   }
 }
 
-.button-icon--loading {
+.button--loading {
   color: var(--text-base) !important;
 }
-.button-icon--loading svg {
+.button--loading svg {
   animation: circle .8s linear infinite;
 }
 

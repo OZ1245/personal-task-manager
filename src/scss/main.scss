@@ -22,6 +22,10 @@ body {
   background-color: var(--background);
 }
 
+main {
+  height: 100%;
+}
+
 ul {
   padding: 0;
   margin: 0;
@@ -49,4 +53,8 @@ a {
   &:disabled {
     color: var(--text-disabled)
   }
+}
+
+input:-internal-autofill-selected {
+  background-color: transparent;
 }

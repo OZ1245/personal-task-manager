@@ -8,17 +8,25 @@ export function useUser() {
   const $router = useRouter()
 
   const createUser = async (data) => {
+    console.log('--- createUser lib method ---')
     return await userApi
       .signUp(data)
-      .then(async result => {
-        localStorage.setItem('token', result?.session.access_token)
-        $store.dispatch('setUserAuthData', result)
+      .then(async ({ data, error }) => {
+        if (error) {
+          return {
+            error: true,
+            message: JSON.parse(JSON.stringify(error)).message
+          }
+        }
+
+        localStorage.setItem('token', data?.session.access_token)
+        $store.dispatch('setUserAuthData', data)
 
         return await userApi
           .insertRow({
-            id: result.user.id,
-            email: result.user.email,
-            created: result.user.created_at,
+            id: data.user.id,
+            email: data.user.email,
+            created: data.user.created_at,
             active: true,
             settings: {
               name: null,
@@ -37,29 +45,36 @@ export function useUser() {
   const login = async (data) => {
     return await userApi
       .signIn(data)
-      .then(async result => {
-        if (result) {
+      .then(async ({ data, error }) => {
+        if (error) {
+          return {
+            error: true,
+            message: JSON.parse(JSON.stringify(error)).message
+          }
+        }
+
+        if (data) {
           return await userApi
-            .getById(result.user.id)
+            .getById(data.user.id)
             .then(async row => {
               if (row.active) {
-                localStorage.setItem('token', result?.session.access_token)
-                $store.dispatch('setUserAuthData', result)
+                localStorage.setItem('token', data?.session.access_token)
+                $store.dispatch('setUserAuthData', data)
 
                 return await userApi
                   .updateById({
-                    last_login: result.user.updated_at
+                    last_login: data.user.updated_at
                   },
-                    result.user.id
+                    data.user.id
                   )
-                  .then(result => {
-                    $store.dispatch('setUserData', result)
+                  .then(data => {
+                    $store.dispatch('setUserData', data)
 
                     $router.push({
                       name: 'Home'
                     })
 
-                    return result
+                    return data
                   })
                 
               } else {
@@ -91,7 +106,6 @@ export function useUser() {
     return await userApi
       .getSession()
       .then(data => {
-
         return data
       })
   }
