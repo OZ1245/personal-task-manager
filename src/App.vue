@@ -7,7 +7,7 @@
     Loading...
   </div>
 
-  <component :is="layoutIs"> 
+  <component v-if="!loading" :is="layoutIs"> 
     <router-view /> 
   </component>
 
@@ -29,14 +29,17 @@ const $user = useUser()
 const loading = ref(true)
 const layoutIs = ref()
 
+console.log('--- App created ---')
 $user.checkSession()
   .then(result => {
+    console.log('--- checkSession method ---')
+    console.log('result:', result)
     if (result) {
       $user
         .fetchUser()
-        .then(data => {
-          console.log('data:', data)
-        })
+        // .then(data => {
+        //   console.log('data:', data)
+        // })
     } else {
       $user.logout()
     }

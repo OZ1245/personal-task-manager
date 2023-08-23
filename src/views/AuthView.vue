@@ -34,9 +34,14 @@
       <form class="auth__form">
         <SignUp 
           v-if="isSignUp" 
+          :loading="loading"
           @form-submit="onProccessForm"
         />
-        <SignIn v-else />
+
+        <SignIn 
+          v-else 
+          :loading="loading"
+        />
       </form>
     </div>
   </div>
@@ -44,22 +49,28 @@
 
 <script setup>
 import { ref, watch } from "vue"
+import { useRouter } from "vue-router"
 import { useUser } from '@/libs/user'
 
 import SignUp from "@/components/auth/SignUp.vue"
 import SignIn from "@/components/auth/SignIn.vue"
 import TheAlert from "@/components/UI/TheAlert.vue"
 
+const $router = useRouter()
 const $user = useUser()
 
 const isSignUp = ref(true)
 const errorMessage = ref(null)
+const loading = ref(false)
 
 const onChangeForm = () => {
   isSignUp.value = !isSignUp.value
 }
 
 const onProccessForm = (data) => {
+  console.log('--- onProccessForm method ---')
+  console.log('data:', data)
+
   if (isSignUp.value) {
     onSignUp(data)
   } else {
@@ -68,7 +79,9 @@ const onProccessForm = (data) => {
 }
 
 const onSignUp = ({ email, password }) => {
+  console.log('--- onSignUp method ---')
   errorMessage.value = null
+  loading.value = true
 
   $user
     .createUser({
@@ -76,16 +89,23 @@ const onSignUp = ({ email, password }) => {
       password: password.value
     })
     .then(result => {
-      // console.log('result:', result)
+      console.log('result:', result)
 
       if (result.error) {
         errorMessage.value = result.message
+      } else {
+        $router.push({
+          name: 'Home'
+        })
       }
+
+      loading.value = false
     })
 }
 
 const onLogin = ({ email, password }) => {
   errorMessage.value = null
+  loading.value = true
 
   $user
     .login({
@@ -97,7 +117,13 @@ const onLogin = ({ email, password }) => {
 
       if (result.error) {
         errorMessage.value = result.message
+      } else {
+        $router.push({
+          name: 'Home'
+        })
       }
+
+      loading.value = false
     })
 }
 

@@ -11,7 +11,26 @@ export function useProject() {
   const $template = useTemplate()
   const $user = useUser()
 
-  const userId = computed(() => $user.getUser()).value.id
+  const $project__getUserId = () => {
+    console.log('--- $project__getUserId lib method ---')
+    const token = localStorage.getItem('token')
+    console.log('token:', token)
+
+    if (!token) {
+      $user.logout()
+      return
+    }
+
+    const user = computed(() => $user.getUser())
+    console.log('user:', user.value)
+
+    if (!user.value) {
+      $user.logout()
+      return
+    }
+
+    return user.value.id
+  }
 
   /**
    * Создать проект
@@ -19,6 +38,8 @@ export function useProject() {
    * @returns {Promise} Данные проекта
    */
   const createProject = async ({ params, saveTemplateOption, templateName }) => {
+    const userId = $project__getUserId()
+
     return await projectsApi
       .insertRow({
         ...params,
@@ -76,6 +97,11 @@ export function useProject() {
    * @returns {Promise} Список проектов
    */
   const fetchProjects = async () => {
+    console.log('--- fetchProjects method ---')
+    const userId = $project__getUserId()
+
+    console.log('userId:', userId)
+
     return await projectsApi
       .readByUserId(userId)
       .then(result => {
@@ -99,6 +125,8 @@ export function useProject() {
    * @returns {Promise} Обновленные данные
    */
   const updateProject = async (data, id) => {
+    const userId = $project__getUserId()
+
     return await projectsApi
       .updateById(
         {
@@ -136,6 +164,8 @@ export function useProject() {
    * @returns {Promise} true
    */
   const deleteProjects = async () => {
+    const userId = $project__getUserId()
+
     return await projectsApi
       .deleteByUserId(userId)
       .then(result => {

@@ -22,11 +22,11 @@ export function useUser() {
         localStorage.setItem('token', data?.session.access_token)
         $store.dispatch('setUserAuthData', data)
 
+        // FIXME:
         return await userApi
           .insertRow({
             id: data.user.id,
             email: data.user.email,
-            created: data.user.created_at,
             active: true,
             settings: {
               name: null,
@@ -36,7 +36,7 @@ export function useUser() {
           .then(row => {
             localStorage.setItem('language', row.settings.language)
             $store.dispatch('setUserData', row)
-
+                  
             return row
           })
       })
@@ -74,13 +74,13 @@ export function useUser() {
                       name: 'Home'
                     })
 
-                    return data
+                  return data
                   })
                 
               } else {
                 return {
                   error: 'This user is not active or has been deleted'
-                }
+                    }
               }
             })
         }

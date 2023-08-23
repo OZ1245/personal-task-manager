@@ -26,8 +26,8 @@ const signIn = async (params) => {
     })
 }
 
-const signOut = async () => {
-  return await supabase.auth
+const signOut = () => {
+  return supabase.auth
     .signOut()
     .then(({ error }) => {
       if (error) throw error
@@ -65,15 +65,21 @@ const deleteUser = async (id) => {
     })
 }
 
-const insertRow = async (params) => {
-  return await supabase
+const insertRow = (params) => {
+  console.log('--- insertRow api method ---')
+  console.log('params:', params)
+
+  return supabase
     .from('Users')
-    .insert([params])
+    .insert(params)
     .select()
     .then(({ data, error }) => {
+      console.log('data:', data)
+      console.log('error:', error)
+
       if (error) throw error
 
-      return data
+      return data[0]
     })
     .catch(error => {
       throw error.message
