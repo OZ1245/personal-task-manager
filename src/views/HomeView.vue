@@ -13,5 +13,6 @@ import { useUser } from '@/libs/user'
 import ProjectsList from '@/components/projects/ProjectsList.vue'
 
 const $user = useUser()
+// FIXME: Убрать
 const onSignOut = () => $user.logout()
 </script>

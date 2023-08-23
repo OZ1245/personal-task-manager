@@ -20,6 +20,7 @@
     :disabled="!validate"
     medium
     success
+    :loading="props.loading"
     @click="onSubmit"
   >
     Sign Up
@@ -27,15 +28,23 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, computed } from "vue"
+import { ref, defineEmits, computed, defineProps } from "vue"
 
 import TheInput from '@/components/UI/form/TheInput' 
 import TheButton from '@/components/UI/TheButton'
 
+const emits = defineEmits(['form-submit'])
+
 const email = ref('')
 const password = ref('')
 
-const emits = defineEmits(['form-submit'])
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
+})
 
 const validate = computed(() => {
   // TODO: Валидация

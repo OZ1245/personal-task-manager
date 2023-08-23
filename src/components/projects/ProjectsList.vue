@@ -39,13 +39,13 @@ import { useProject } from '@/libs/project'
 const $router = useRouter()
 const $project = useProject()
 
+const loading = ref(true)
+
 $project
   .fetchProjects()
   .then(() => {
     loading.value = false
   })
-
-const loading = ref(true)
 
 const projectsList = computed(() => $project.getProjects())
 

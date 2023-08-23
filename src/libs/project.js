@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+// import { supabase } from '@/libs/supabase'
 
 import { useTemplate } from '@/libs/template.js'
 import { useUser } from '@/libs/user'
@@ -11,62 +12,43 @@ export function useProject() {
   const $template = useTemplate()
   const $user = useUser()
 
-  const $project__getUserId = () => {
-    console.log('--- $project__getUserId lib method ---')
-    const token = localStorage.getItem('token')
-    console.log('token:', token)
-
-    if (!token) {
-      $user.logout()
-      return
-    }
-
-    const user = computed(() => $user.getUser())
-    console.log('user:', user.value)
-
-    if (!user.value) {
-      $user.logout()
-      return
-    }
-
-    return user.value.id
-  }
-
   /**
    * Создать проект
    * @param {Object} data 
    * @returns {Promise} Данные проекта
    */
   const createProject = async ({ params, saveTemplateOption, templateName }) => {
-    const userId = $project__getUserId()
+    return await $user
+      .getUserData()
+      .then(async user => {
+        return await projectsApi
+          .insertRow({
+            ...params,
+            user_id: user.id
+          })
+          .then(async result => {
+            fetchProjects()
 
-    return await projectsApi
-      .insertRow({
-        ...params,
-        user_id: userId
-      })
-      .then(async result => {
-        fetchProjects()
+            const returnedData = {
+              createProject: result,
+              createTemplate: null
+            }
 
-        const returnedData = {
-          createProject: result,
-          createTemplate: null
-        }
-
-        if (saveTemplateOption) {
-          await $template
-            .createTemplate({
-              settings: params.settings,
-              user_id: userId,
-              name: templateName 
-            })
-            .then(result => {
-              returnedData.createTemplate = result
-            })
-        }
-        
-        return returnedData
-      })
+            if (saveTemplateOption) {
+              await $template
+                .createTemplate({
+                  settings: params.settings,
+                  user_id: user.id,
+                  name: templateName 
+                })
+                .then(result => {
+                  returnedData.createTemplate = result
+                })
+            }
+            
+            return returnedData
+          })
+    })
   }
 
   /**
@@ -98,16 +80,19 @@ export function useProject() {
    */
   const fetchProjects = async () => {
     console.log('--- fetchProjects method ---')
-    const userId = $project__getUserId()
 
-    console.log('userId:', userId)
+    return await $user
+      .getUserData()
+      .then(async user => {
+        console.log('userId:', user.id)
 
-    return await projectsApi
-      .readByUserId(userId)
-      .then(result => {
-        $store.dispatch('setProjects', result)
+        return await projectsApi
+          .readByUserId(user.id)
+          .then(result => {
+            $store.dispatch('setProjects', result)
 
-        return result
+            return result
+          })
       })
   }
 
@@ -125,22 +110,24 @@ export function useProject() {
    * @returns {Promise} Обновленные данные
    */
   const updateProject = async (data, id) => {
-    const userId = $project__getUserId()
+    return await $user
+      .getUserData()
+      .then(async user => {
+        return await projectsApi
+          .updateById(
+            {
+              ...data,
+              user_id: user.id
+            },
+            id
+          )
+          .then(result => {
+            fetchProjects()
+            $store.dispatch('setProject', result)
 
-    return await projectsApi
-      .updateById(
-        {
-          ...data,
-          user_id: userId
-        },
-        id
-      )
-      .then(result => {
-        fetchProjects()
-        $store.dispatch('setProject', result)
-
-        return result
-      })
+            return result
+          })
+    })
   }
 
   /**
@@ -164,15 +151,17 @@ export function useProject() {
    * @returns {Promise} true
    */
   const deleteProjects = async () => {
-    const userId = $project__getUserId()
-
-    return await projectsApi
-      .deleteByUserId(userId)
-      .then(result => {
-        $store.dispatch('clearProjects', userId)
-
-        return result
-      })
+    return await $user
+      .getUserData()
+      .then(async user => {
+        return await projectsApi
+          .deleteByUserId(user.id)
+          .then(result => {
+            $store.dispatch('clearProjects', user.id)
+            
+              return result
+            })
+    })
   }
 
   return {

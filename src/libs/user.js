@@ -19,10 +19,10 @@ export function useUser() {
           }
         }
 
+        // localStorage.setItem(`sb-${process.env.SUPABASE_URL}-auth-token`)
         localStorage.setItem('token', data?.session.access_token)
         $store.dispatch('setUserAuthData', data)
 
-        // FIXME:
         return await userApi
           .insertRow({
             id: data.user.id,
@@ -58,6 +58,7 @@ export function useUser() {
             .getById(data.user.id)
             .then(async row => {
               if (row.active) {
+                // localStorage.setItem(`sb-${process.env.SUPABASE_URL}-auth-token`)
                 localStorage.setItem('token', data?.session.access_token)
                 $store.dispatch('setUserAuthData', data)
 
@@ -130,7 +131,18 @@ export function useUser() {
   }
 
   const getUser = () => {
-    return computed(() => $store.getters.getUserData).value
+    return computed(() => $store.state.user.data).value
+  }
+
+  const getUserData = async () => {
+    console.log('--- getUserData ---')
+    return await userApi
+      .getAuthUserData()
+      .then(data => {
+        $store.dispatch('setUserAuthData', data)
+        
+        return data
+      })
   }
 
   const unactive = async () => {
@@ -186,11 +198,12 @@ export function useUser() {
   return {
     createUser,
     fetchUser,
-    getUser,
+    getUserData,
     login,
     logout,
     unactive,
     deleteUser,
     checkSession,
+    getUser,
   }
 }

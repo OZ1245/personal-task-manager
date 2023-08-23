@@ -45,7 +45,19 @@ const getSession = () => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data.session ? data.session : false
+      return data.session || false
+    })
+    .catch(error => {
+      throw error.message
+    })
+}
+
+const getAuthUserData = () => {
+  console.log('--- getAuthUserData ---')
+  return supabase.auth
+    .getUser()
+    .then(({ data }) => {
+      return data.user || null
     })
     .catch(error => {
       throw error.message
@@ -95,7 +107,7 @@ const updateById = async (params, id) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
+      return data[0]
     })
     .catch(error => {
       throw error.message
@@ -164,4 +176,5 @@ export default {
   deleteById,
   deleteUser,
   getSession,
+  getAuthUserData,
 }

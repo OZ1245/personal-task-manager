@@ -37,10 +37,11 @@
           :loading="loading"
           @form-submit="onProccessForm"
         />
-
+          
         <SignIn 
           v-else 
           :loading="loading"
+          @form-submit="onProccessForm"
         />
       </form>
     </div>
@@ -89,7 +90,7 @@ const onSignUp = ({ email, password }) => {
       password: password.value
     })
     .then(result => {
-      console.log('result:', result)
+      // console.log('result:', result)
 
       if (result.error) {
         errorMessage.value = result.message
@@ -113,7 +114,7 @@ const onLogin = ({ email, password }) => {
       password: password.value
     })
     .then(result => {
-      // console.log('result:', result)
+      console.log('result:', result)
 
       if (result.error) {
         errorMessage.value = result.message

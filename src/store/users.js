@@ -9,9 +9,6 @@ export default {
     getUserAuthData: ({ user }) => (
       user.authData || null
     ),
-    getUserData: ({ user }) => (
-      user.data || null
-    )
   },
   mutations: {
     SET_AUTH_DATA(state, authData) {
