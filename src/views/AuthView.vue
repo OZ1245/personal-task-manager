@@ -69,9 +69,6 @@ const onChangeForm = () => {
 }
 
 const onProccessForm = (data) => {
-  console.log('--- onProccessForm method ---')
-  console.log('data:', data)
-
   if (isSignUp.value) {
     onSignUp(data)
   } else {
@@ -80,7 +77,6 @@ const onProccessForm = (data) => {
 }
 
 const onSignUp = ({ email, password }) => {
-  console.log('--- onSignUp method ---')
   errorMessage.value = null
   loading.value = true
 
@@ -90,8 +86,6 @@ const onSignUp = ({ email, password }) => {
       password: password.value
     })
     .then(result => {
-      // console.log('result:', result)
-
       if (result.error) {
         errorMessage.value = result.message
       } else {
@@ -114,8 +108,6 @@ const onLogin = ({ email, password }) => {
       password: password.value
     })
     .then(result => {
-      console.log('result:', result)
-
       if (result.error) {
         errorMessage.value = result.message
       } else {

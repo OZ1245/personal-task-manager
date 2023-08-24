@@ -64,7 +64,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  console.log('--- beforeEach ---')
   const token = localStorage.getItem('token')
 
   if (to.meta.auth && to.name !== 'Auth') {

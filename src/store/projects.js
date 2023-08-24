@@ -15,7 +15,6 @@ export default {
       state.project = data
     },
     SET_PROJECTS(state, data) {
-      console.log('--- SET_PROJECTS mutation ---')
       state.projects = data
     },
     REMOVE_PROJECT(state, id) {

@@ -53,7 +53,6 @@ const getSession = () => {
 }
 
 const getAuthUserData = () => {
-  console.log('--- getAuthUserData ---')
   return supabase.auth
     .getUser()
     .then(({ data }) => {
@@ -78,17 +77,11 @@ const deleteUser = async (id) => {
 }
 
 const insertRow = (params) => {
-  console.log('--- insertRow api method ---')
-  console.log('params:', params)
-
   return supabase
     .from('Users')
     .insert(params)
     .select()
     .then(({ data, error }) => {
-      console.log('data:', data)
-      console.log('error:', error)
-
       if (error) throw error
 
       return data[0]

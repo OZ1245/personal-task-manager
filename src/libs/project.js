@@ -79,13 +79,9 @@ export function useProject() {
    * @returns {Promise} Список проектов
    */
   const fetchProjects = async () => {
-    console.log('--- fetchProjects method ---')
-
     return await $user
       .getUserData()
       .then(async user => {
-        console.log('userId:', user.id)
-
         return await projectsApi
           .readByUserId(user.id)
           .then(result => {

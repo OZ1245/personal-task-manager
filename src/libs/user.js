@@ -8,7 +8,6 @@ export function useUser() {
   const $router = useRouter()
 
   const createUser = async (data) => {
-    console.log('--- createUser lib method ---')
     return await userApi
       .signUp(data)
       .then(async ({ data, error }) => {
@@ -135,7 +134,6 @@ export function useUser() {
   }
 
   const getUserData = async () => {
-    console.log('--- getUserData ---')
     return await userApi
       .getAuthUserData()
       .then(data => {
