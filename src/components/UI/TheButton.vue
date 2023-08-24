@@ -4,15 +4,19 @@
     :type="props.type"
     class="button"
     :class="className"
-    :disabled="loading"
+    :disabled="props.loading"
     @click="emit('click')"
   >
-    <slot></slot>
+    <ArrowPathIcon v-if="props.loading"/>
+
+    <slot v-else></slot>
   </button>
 </template>
 
 <script setup>
 import { defineProps, defineEmits, computed } from 'vue'
+
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   type: {
@@ -51,6 +55,11 @@ const props = defineProps({
     default: false
   },
   success: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  accent: {
     type: Boolean,
     required: false,
     default: false
@@ -98,6 +107,10 @@ const className = computed(() => {
     className += ' button--success'
   }
 
+  if (props.accent) {
+    className += ' button--accent'
+  }
+
   if (props.loading) { 
     className += ' button--loading'
   }
@@ -109,6 +122,8 @@ const emit = defineEmits(['click'])
 </script>
 
 <style lang="scss" scoped>
+@import '/src/scss/mixins';
+
 .button {
   display: inline-flex;
   justify-content: center;
@@ -144,7 +159,8 @@ const emit = defineEmits(['click'])
 .button--info,
 .button--warning,
 .button--danger,
-.button--success {
+.button--success,
+.button--accent {
   padding: 4px;
   border-radius: var(--border-radius);
 
@@ -160,6 +176,8 @@ const emit = defineEmits(['click'])
   }
 }
 .button--neutral {
+  @include modify-background(var(--neutral), 80%);
+
   background-color: var(--neutral);
   color: var(--background);
 
@@ -168,6 +186,8 @@ const emit = defineEmits(['click'])
   }
 }
 .button--info {
+  @include modify-background(var(--info), 80%);
+
   background-color: var(--info);
   color: var(--text-base);
 
@@ -176,6 +196,8 @@ const emit = defineEmits(['click'])
   }
 }
 .button--warning {
+  @include modify-background(var(--warning), 80%);
+
   background-color: var(--warning);
   color: var(--background);
 
@@ -184,6 +206,8 @@ const emit = defineEmits(['click'])
   }
 }
 .button--danger {
+  @include modify-background(var(--danger), 80%);
+
   background-color: var(--danger);
   color: var(--text-base);
 
@@ -192,7 +216,20 @@ const emit = defineEmits(['click'])
   }
 }
 .button--success {
+  @include modify-background(var(--success), 80%);
+
   background-color: var(--success);
+  color: var(--text-base);
+
+  &:hover:not(:disabled) {
+    color: var(--text-base);
+  }
+}
+
+.button--accent {
+  @include modify-background(var(--accent), 80%);
+
+  background-color: var(--accent);
   color: var(--text-base);
 
   &:hover:not(:disabled) {
@@ -204,16 +241,9 @@ const emit = defineEmits(['click'])
   color: var(--text-base) !important;
 }
 .button--loading svg {
-  animation: circle .8s linear infinite;
-}
+  @include circle-animation(.8s);
 
-@keyframes circle {
-  0%{
-    transform:rotate(0deg);
-  
-  }
-  100%{
-    transform:rotate(360deg);
-  }
+  width: var(--icon-size-big);
+  height: var(--icon-size-big);
 }
 </style>

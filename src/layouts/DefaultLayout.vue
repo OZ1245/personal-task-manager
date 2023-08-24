@@ -1,14 +1,18 @@
 <template>
   <div class="layout layout--detault">
-    <header class="layout__header">Header</header>
+    <DefaultHeader/>
 
-    <main class="layout__main">
+    <section class="layout__main">
       <slot></slot>
-    </main>
+    </section>
 
-    <footer class="layout__footer">Footer</footer>
+    <footer class="layout__footer"></footer>
   </div>  
 </template>
+
+<script setup>
+import DefaultHeader from '@/components/common/DefaultHeader.vue'
+</script>
 
 <style lang="scss">
 .layout {
@@ -22,7 +26,7 @@
 }
 .layout__main {
   flex-grow: 1;
-  width: 100%;
+  // width: 100%;
   height: 100%;
   overflow: hidden;
 }

@@ -11,3 +11,17 @@
     }
   }
 }
+
+@mixin modify-background ($color, $percent: 50%) {
+  transition: background-color .3s;
+  
+  &:hover:not(:disabled) {
+    background-color: color-mix(in srgb, $color $percent, white);
+    transition: background-color .15s;
+  }
+  
+  &:active {
+    background-color: color-mix(in srgb, $color $percent, black);
+    transition: background-color .15s;
+  }
+}

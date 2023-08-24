@@ -1,18 +1,25 @@
 <template>
   <div class="home">
-    <h1>PERSONAL <br> TASK MANAGER</h1>
-
     <ProjectsList/>
     
-    <button type="button" @click="onSignOut">Sign Out</button>
+    <!-- <button type="button" @click="onSignOut">Sign Out</button> -->
   </div>
 </template>
 
 <script setup>
-import { useUser } from '@/libs/user'
+// import { useUser } from '@/libs/user'
 import ProjectsList from '@/components/projects/ProjectsList.vue'
 
-const $user = useUser()
+// const $user = useUser()
 // FIXME: Убрать
-const onSignOut = () => $user.logout()
+// const onSignOut = () => $user.logout()
 </script>
+
+<style lang="scss">
+.home {
+  display: flex;
+  justify-content: center;
+
+  height: 100%;
+}
+</style>

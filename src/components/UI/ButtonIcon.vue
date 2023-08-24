@@ -3,7 +3,7 @@
     :type="props.type"
     class="button-icon"
     :class="className"
-    :disabled="loading"
+    :disabled="props.loading"
     @click="emit('click')"
   >
     <component 
@@ -119,6 +119,8 @@ const emit = defineEmits(['click'])
 </script>
 
 <style lang="scss" scoped>
+@import '/src/scss/mixins';
+
 .button-icon {
   display: inline-flex;
   justify-content: center;
@@ -214,16 +216,6 @@ const emit = defineEmits(['click'])
   color: var(--text-base) !important;
 }
 .button-icon--loading svg {
-  animation: circle .8s linear infinite;
-}
-
-@keyframes circle {
-  0%{
-    transform:rotate(0deg);
-  
-  }
-  100%{
-    transform:rotate(360deg);
-  }
+  @include circle-animation(.8s);
 }
 </style>
