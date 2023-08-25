@@ -64,6 +64,11 @@ const props = defineProps({
     required: false,
     default: false
   },
+  second: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   loading: {
     type: Boolean,
     required: false,
@@ -111,6 +116,10 @@ const className = computed(() => {
     className += ' button--accent'
   }
 
+  if (props.second) {
+    className += ' button--second'
+  }
+
   if (props.loading) { 
     className += ' button--loading'
   }
@@ -140,7 +149,10 @@ const emit = defineEmits(['click'])
   color: var(--text-base);
 
   &:disabled {
-    color: var(--text-disabled);
+    background-color: var(--neutral);
+    color: var(--text-base);
+
+    cursor: no-drop;
   }
 
   &:hover:not(:disabled) {
@@ -149,10 +161,18 @@ const emit = defineEmits(['click'])
 }
 
 .button--medium  {
-  height: 40px;
+  gap: calc(var(--padding-inline) / 4);
+
+  height: 30px;
+
+  font-size: var(--font-size-s);
 }
 .button--big  {
+  gap: calc(var(--padding-inline) / 2);
+
   height: 40px;
+
+  font-size: var(--font-size-b);
 }
 
 .button--neutral,
@@ -160,21 +180,28 @@ const emit = defineEmits(['click'])
 .button--warning,
 .button--danger,
 .button--success,
-.button--accent {
-  padding: 4px;
+.button--accent,
+.button--second {
+  padding-inline: var(--padding-inline);
+  padding-block: var(--padding-block);
   border-radius: var(--border-radius);
-
-  &:disabled {
-    background-color: var(--neutral);
-  }
+  transition: background-color .3s;
 
   &:hover:not(:disabled) {
-    filter: brightness(1.2);
+    transition: background-color .15s;
   }
   &:active {
-    filter: brightness(0.8);
+    transition: background-color .15s;
   }
 }
+
+.button--second {
+  border: {
+    width: 2px;
+    style: solid;
+  }
+}
+
 .button--neutral {
   @include modify-background(var(--neutral), 80%);
 
@@ -233,6 +260,19 @@ const emit = defineEmits(['click'])
   color: var(--text-base);
 
   &:hover:not(:disabled) {
+    color: var(--text-base);
+  }
+}
+
+.button--second {
+  // @include modify-background(var(--background), 80%);
+
+  background-color: var(--background);
+  border-color: var(--darkest);
+  color: var(--text-base);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--darkest);
     color: var(--text-base);
   }
 }

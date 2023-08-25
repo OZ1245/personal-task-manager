@@ -1,6 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="input">
+  <div 
+    class="input"
+    :class="{ 'input--horizontal': props.horizontal }"
+  >
     <label 
       v-if="props.label.length" 
       :for="inputId"
@@ -14,6 +17,7 @@
         :type="type"
         :value="modelValue"
         :id="inputId"
+        ref="input"
         :autocomplete="props.autocomplete"
         :required="props.required"
         class="input__input"
@@ -72,6 +76,11 @@ const props = defineProps({
     default: '100%'
   },
   required: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  horizontal: {
     type: Boolean,
     required: false,
     default: false
@@ -138,6 +147,15 @@ const onProcessButtonClick = () => {
   gap: calc(var(--padding-block) / 2);
 
   height: auto;
+}
+
+.input--horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--padding-inline) / 2);
+}
+.input--horizontal .input__label {
+  flex-shrink: 0;
 }
 
 .input__label {
