@@ -33,10 +33,10 @@ export default {
         // }
       },
 
-      unmounted(el) {
-        el.removeChild(backdrop)
-        el.classList.remove('_loading')
-      }
+      // unmounted(el) {
+      //   el.removeChild(backdrop)
+      //   el.classList.remove('_loading')
+      // }
     })
   }
 }
