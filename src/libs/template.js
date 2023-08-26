@@ -9,7 +9,14 @@ export function useTemplate() {
       })
   }
 
+  const fetchTemplates = async () => {
+    return await templatesApi
+      .selectRows()
+      .then(result => result || [])
+  }
+
   return {
-    createTemplate
+    createTemplate,
+    fetchTemplates,
   }
 }

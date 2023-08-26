@@ -7,6 +7,11 @@
           Templates
         </h2>
       </template>
+
+      <!-- <div class="project-settings__templates-list">
+
+      </div> -->
+      <TemplatesList/>
     </TheSidebar>
 
     <div class="project-settings__main">
@@ -85,7 +90,8 @@ import ProjectForm from '@/components/projects/ProjectForm.vue'
 import TheInput from '@/components/UI/form/TheInput.vue'
 import TheButton from '@/components/UI/TheButton.vue'
 import TheSidebar from '@/components/common/TheSidebar.vue'
-import TheCheckbox from '../UI/form/TheCheckbox.vue'
+import TheCheckbox from '@/components/UI/form/TheCheckbox.vue'
+import TemplatesList from '@/components/projects/TemplatesList.vue'
 
 const $router = useRouter()
 const $project = useProject()
