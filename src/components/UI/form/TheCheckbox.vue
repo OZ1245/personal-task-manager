@@ -54,13 +54,14 @@ const props = defineProps({
   align-items: center;
   flex-shrink: 0;
 
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border: {
     width: 1px;
     style: solid;
     color: var(--text-base);
-    radius: 50%;
+    // radius: 50%;
+    radius: var(--border-radius);
   }
 }
 
@@ -69,7 +70,7 @@ const props = defineProps({
   width: var(--icon-size);
   height: var(--icon-size);
 
-  // color: var(--text-base);
+  color: var(--accent);
 }
 
 .checkbox__label {

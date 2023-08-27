@@ -20,6 +20,7 @@
           <TheButton
             success
             medium
+            @click="emits('select-template', template)"
           >
             <CheckIcon
               class="templates-list__button"
@@ -32,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { useTemplate } from '@/libs/template'
 
 import TheButton from '@/components/UI/TheButton.vue';
@@ -42,6 +43,8 @@ const $template = useTemplate()
 const templates = ref([])
 
 const loading = ref(true)
+
+const emits = defineEmits(['select-template'])
 
 $template
   .fetchTemplates()

@@ -12,7 +12,10 @@
       {{ props.label }}
     </label>
     
-    <div class="input__control">
+    <div 
+      class="input__control"
+      :class="{ 'input__control--active' : props.active }"
+    >
       <input
         :type="type"
         :value="modelValue"
@@ -20,6 +23,7 @@
         ref="input"
         :autocomplete="props.autocomplete"
         :required="props.required"
+        :readonly="props.readonly"
         class="input__input"
         @input="emits('update:modelValue', $event.target.value)"
       /> 
@@ -84,6 +88,16 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false
+  },
+  readonly: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  active: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 })
 
@@ -104,11 +118,15 @@ const inputId = computed(() => {
     return props.inputId
   }
   
-  return `input-${dayjs().valueOf()}${Math.random()}`
+  return `input-${dayjs().valueOf()}${parseInt(Math.random())}`
 })
 
 const showButton = computed(() => {
   if (props.inputType === 'password') {
+    return true
+  }
+
+  if (['selector-opened', 'selector-closed'].includes(props.inputType)) {
     return true
   }
 
@@ -120,6 +138,14 @@ const icon = computed(() => {
     return (showPassword.value) 
       ? 'EyeSlash'
       : 'Eye'
+  }
+
+  if (props.inputType === 'selector-opened') {
+    return 'ChevronUp'
+  }
+
+  if (props.inputType === 'selector-closed') {
+    return 'ChevronDown'
   }
 
   return ''
@@ -185,6 +211,11 @@ const onProcessButtonClick = () => {
     border-color: var(--accent);
     box-shadow: 0px 0px 5px 1px var(--accent);
   }
+}
+
+.input__control--active {
+  border-color: var(--accent);
+  box-shadow: 0px 0px 5px 1px var(--accent);
 }
 
 .input__input {

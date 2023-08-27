@@ -11,7 +11,9 @@
       <!-- <div class="project-settings__templates-list">
 
       </div> -->
-      <TemplatesList/>
+      <TemplatesList
+        @select-template="onSelectTemplate"
+      />
     </TheSidebar>
 
     <div class="project-settings__main">
@@ -112,12 +114,16 @@ const validate = computed(() => {
     return false
   }
 
-  if (form[1] && !form[1].length) {
+  if (!form.settings.fields[0].length) {
     return false
   }
 
   return true
 })
+
+const onSelectTemplate = (template) => {
+  form.settings = template.settings
+}
 
 const onCheckTemplate = (value) => {
   nextTick(() => {

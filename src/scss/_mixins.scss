@@ -12,6 +12,16 @@
   }
 }
 
+@mixin modify-color ($color, $mode, $percent: 50%) {
+  @if ($mode == 'lighten') {
+    background-color: color-mix(in srgb, $color $percent, white);
+  }
+  
+  @if ($mode == 'darken') {
+    background-color: color-mix(in srgb, $color $percent, black);
+  }
+}
+
 @mixin modify-background ($color, $percent: 50%) {
   &:hover:not(:disabled) {
     background-color: color-mix(in srgb, $color $percent, white);
