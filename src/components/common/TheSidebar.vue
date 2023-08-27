@@ -41,7 +41,7 @@
   flex-grow: 1;
   height: 100%;
 
-  padding-block: var(--padding-block);
+  // padding-block: var(--padding-block);
   padding-inline: var(--padding-inline);
 }
 .sidebar__footer {
