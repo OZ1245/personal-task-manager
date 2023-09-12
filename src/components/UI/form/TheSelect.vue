@@ -48,32 +48,25 @@
 </template>
 
 <script lang="ts" setup>
-import { withDefaults, defineProps, defineEmits, ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import dayjs from 'dayjs'
 import TheInput from '@/components/UI/form/TheInput.vue'
 
 interface IOption {
-  id: number,
-  code: string,
-  name: string,
-  description: string,
+  [ key: string ]: any,
   title: string,
   value: number,
 }
-// interface IClickOutside {
-//   (): boolean,
-// }
 
 const props = withDefaults(defineProps<{
   modelValue: any,
-  label: string,
-  options: Array<IOption>,
-  placeholder: string,
-  maxCount: number,
-  selectId: string,
-  horizontal: boolean,
-  inputId: string,
+  label?: string,
+  options?: IOption[] | any,
+  placeholder?: string,
+  maxCount?: number,
+  selectId?: string,
+  horizontal?: boolean,
 }>(), {
   modelValue: null,
   label: '',
@@ -85,15 +78,24 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{
-  'update:modelValue': [ value: number ],
+  (e: 'update:modelValue', value: number ): void,
 }>()
 
-const showOptions = ref(false)
-const selectedOptionTitle = ref(props.options[0].title)
+const showOptions = ref<boolean>(false)
+const selectedOptionTitle = ref<any>(null)
+
+onMounted(() => {
+  if (props.modelValue) {
+    selectedOptionTitle.value = props
+      .options
+      .find((option: IOption) => option.value === props.modelValue)
+      .title
+  }
+})
 
 const selectId = computed((): string => {
-  if (props.inputId) {
-    return props.inputId
+  if (props.selectId) {
+    return props.selectId
   }
   
   return `select-${dayjs().valueOf()}${Math.floor(Math.random())}`
@@ -108,7 +110,7 @@ const onClickOutside = [
       'contol'
     ]
   }
-]
+] as any
 
 const onOpenOptions = () => {
   showOptions.value = true
@@ -124,6 +126,8 @@ const onSelect = (option: IOption) => {
   console.log('option:', option)
 
   emits('update:modelValue', option.value)
+  selectedOptionTitle.value = option.title
+  onCloseOptions()
 }
 
 </script>
@@ -149,6 +153,10 @@ const onSelect = (option: IOption) => {
 
 .select__label {
   font-size: var(--font-size-xs);
+}
+
+.select__input {
+  cursor: pointer;
 }
 
 .select__control {
