@@ -11,6 +11,7 @@ export interface ITranslations {
 }
 
 // Methods
+const tableName = 'Translations'
 
 /**
  * Получить все переводы
@@ -18,21 +19,18 @@ export interface ITranslations {
  */
 const readAll = (): PromiseLike<ITranslations[]> => {
   return supabase
-    .from('Translations')
+    .from(tableName)
     .select('*')
     .then(({ data, error }) => {
       if (error) throw error
 
       return data || []
     })
-    // .then((error: any) => {
-    //   throw error.message
-    // })
   }
   
 const readByKey = (key: string): PromiseLike<ITranslations> => {
   return supabase
-    .from('Translations')
+    .from(tableName)
     .select('*')
     .eq('key', key)
     .then(({ data, error }) => {
@@ -52,7 +50,7 @@ const readByKey = (key: string): PromiseLike<ITranslations> => {
  */
 const readMessagesFromLanguage = (lang: string): PromiseLike<Array<ITranslations>> => {
   return supabase
-    .from('Translations')
+    .from(tableName)
     .select(`lang:${lang}`)
     .then(({ data, error }) => {
       if (error) throw error
@@ -68,7 +66,7 @@ const readMessageFromLanguage = (params: { key: string, lang: string }): Promise
   const { key, lang } = params
   
   return supabase
-    .from('Translations')
+    .from(tableName)
     .select(`lang:${lang}`)
     .eq('key', key)
     .then(({ data, error }) => {

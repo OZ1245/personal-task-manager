@@ -265,8 +265,6 @@ const emit = defineEmits(['click'])
 }
 
 .button--second {
-  // @include modify-background(var(--background), 80%);
-
   background-color: var(--background);
   border-color: var(--darkest);
   color: var(--text-base);

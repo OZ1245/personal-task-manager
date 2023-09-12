@@ -1,32 +1,53 @@
 import { supabase } from '@/libs/supabase'
 
-const signUp = async (params) => {
-  return await supabase.auth
+export interface IAuthParams {
+  email: string,
+  password: string
+}
+
+export interface IUserSettings {
+  name: string | any,
+  language: string
+}
+
+export interface IUser {
+  id: string,
+  created: string,
+  settings: IUserSettings,
+  email: string,
+  active: boolean,
+  last_login: string
+}
+
+export interface IUserParams {
+  id?: string,
+  settings?: IUserSettings,
+  email?: string,
+  active?: boolean,
+  last_login?: string,
+}
+
+const tableName = 'Users'
+
+const signUp = (params: IAuthParams): PromiseLike<any> => {
+  return supabase.auth
     .signUp(params)
-    .then((response) => {
-      // if (error) throw error
-
-      return response
-    })
-    .catch(error => {
+    .then((response) => response)
+    .catch((error) => {
       throw error.message
     })
 }
 
-const signIn = async (params) => {
-  return await supabase.auth
+const signIn = (params: IAuthParams): PromiseLike<any> => {
+  return supabase.auth
     .signInWithPassword(params)
-    .then((response) => {
-      // if (error) throw error
-
-      return response
-    })
-    .catch(error => {
+    .then((response) => response)
+    .catch((error) => {
       throw error.message
     })
 }
 
-const signOut = () => {
+const signOut = (): PromiseLike<boolean> => {
   return supabase.auth
     .signOut()
     .then(({ error }) => {
@@ -39,7 +60,7 @@ const signOut = () => {
     })
 }
 
-const getSession = () => {
+const getSession = (): PromiseLike<any> => {
   return supabase.auth
     .getSession()
     .then(({ data, error }) => {
@@ -52,7 +73,7 @@ const getSession = () => {
     })
 }
 
-const getAuthUserData = () => {
+const getAuthUserData = (): PromiseLike<any> => {
   return supabase.auth
     .getUser()
     .then(({ data }) => {
@@ -63,8 +84,8 @@ const getAuthUserData = () => {
     })
 }
 
-const deleteUser = async (id) => {
-  return await supabase.auth.admin
+const deleteUser = (id: string): PromiseLike<boolean> => {
+  return supabase.auth.admin
     .deleteUser(id)
     .then(({ data, error }) => {
       if (error) throw error
@@ -76,52 +97,43 @@ const deleteUser = async (id) => {
     })
 }
 
-const insertRow = (params) => {
+const insertRow = (params: IUserParams): PromiseLike<IUser | any> => {
   return supabase
-    .from('Users')
+    .from(tableName)
     .insert(params)
     .select()
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data[0]
-    })
-    .catch(error => {
-      throw error.message
+      return data ? data[0] : null
     })
 }
 
-const updateById = async (params, id) => {
-  return await supabase
-    .from('Users')
+const updateById = (params: IUserParams, id: string): PromiseLike<IUser | any> => {
+  return supabase
+    .from(tableName)
     .update(params)
     .eq('id', id)
     .select()
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data[0]
-    })
-    .catch(error => {
-      throw error.message
+      return data ? data[0] : null
     })
 }
 
-const deleteById = async (id) => {
-  return await supabase
-    .from('Users')
+const deleteById = (id: string): PromiseLike<boolean> => {
+  return supabase
+    .from(tableName)
     .delete()
     .eq('id', id)
     .then(response => {
       return (response.status === 204)
     })
-    .catch(error => {
-      throw error.message
-    })
 }
 
-const retrieveUser = async () => {
-  return await supabase.auth
+const retrieveUser = (): PromiseLike<any> => {
+  return supabase.auth
     .getUser()
     .then(({ data }) => {
       return data.user
@@ -131,8 +143,8 @@ const retrieveUser = async () => {
     })
 }
 
-const retrieveSession = async () => {
-  return await supabase.auth
+const retrieveSession = (): PromiseLike<any> => {
+  return supabase.auth
     .getSession()
     .then(({ data }) => {
       return data.session
@@ -142,18 +154,15 @@ const retrieveSession = async () => {
     })
 }
 
-const getById = async (id) => {
-  return await supabase
-    .from('Users')
+const getById = (id: string): PromiseLike<IUser> => {
+  return supabase
+    .from(tableName)
     .select('*')
     .eq('id', id)
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data[0]
-    })
-    .catch(error => {
-      throw error.message
+      return data ? data[0] : null
     })
 }
 

@@ -1,5 +1,5 @@
 import { useStore } from 'vuex'
-import userApi from '@/api/user'
+import userApi, { IAuthParams, IUser } from '@/api/users'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 
@@ -7,7 +7,7 @@ export function useUser() {
   const $store = useStore()
   const $router = useRouter()
 
-  const createUser = async (data) => {
+  const createUser = async (data: IAuthParams): Promise<IUser> => {
     return await userApi
       .signUp(data)
       .then(async ({ data, error }) => {
@@ -41,7 +41,7 @@ export function useUser() {
       })
   }
 
-  const login = async (data) => {
+  const login = async (data: IAuthParams): Promise<IUser> => {
     return await userApi
       .signIn(data)
       .then(async ({ data, error }) => {
@@ -55,7 +55,7 @@ export function useUser() {
         if (data) {
           return await userApi
             .getById(data.user.id)
-            .then(async row => {
+            .then(async (row) => {
               if (row.active) {
                 // localStorage.setItem(`sb-${process.env.SUPABASE_URL}-auth-token`)
                 localStorage.setItem('token', data?.session.access_token)

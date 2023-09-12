@@ -10,41 +10,40 @@
       <li
         v-for="(template, i) in templates"
         :key="`template-${i}`"
-        class="templates-list__item"
+        class="templates__item"
       >
-        <h3 class="templates-list__title">
+        <h3 class="templates__title">
           {{ template.name }}
         </h3>
 
-        <div class="templates-list__controls">
-          <TheButton
-            success
+        <div class="templates__controls">
+          <ButtonIcon
+            icon="ArrowSmallRight"
+            title="Select template"
             medium
+            accent
             @click="emits('select-template', template)"
-          >
-            <CheckIcon
-              class="templates-list__button"
-            />
-          </TheButton>
+          />
         </div>
       </li>
     </ul>
   </div>
 </template>
 
-<script setup>
-import { ref, defineEmits } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { ITemplate } from '@/api/templates';
 import { useTemplate } from '@/libs/template'
-
-import TheButton from '@/components/UI/TheButton.vue';
-import { CheckIcon } from '@heroicons/vue/24/outline';
+import ButtonIcon from '@/components/UI/ButtonIcon.vue';
 
 const $template = useTemplate()
-const templates = ref([])
+const templates = ref<ITemplate[]>([])
 
 const loading = ref(true)
 
-const emits = defineEmits(['select-template'])
+const emits = defineEmits<{
+  (e: 'select-template', template: ITemplate ): void
+}>()
 
 $template
   .fetchTemplates()
@@ -56,8 +55,38 @@ $template
 </script>
 
 <style lang="scss">
-.templates-list__button {
-  width: var(--icon-size);
-  height: var(--icon-size);
+@import '@/scss/mixins';
+
+.templates__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: calc(var(--padding-inline) / 2);
+
+  border-radius: var(--border-radius);
+  background-color: var(--background);
+
+  padding-block: calc(var(--padding-block) / 2);
+  padding-inline: calc(var(--padding-inline) / 2);
+
+  cursor: pointer;
+
+  &:hover {
+    @include modify-color(var(--background), 'lighten', 90%);
+
+    .templates__controls {
+      visibility: visible;
+    }
+  }
+}
+
+.templates__title {
+  font-size: var(--font-size-s);
+  font-weight: 400;
+  margin: 0;
+}
+
+.templates__controls {
+  visibility: hidden;
 }
 </style>

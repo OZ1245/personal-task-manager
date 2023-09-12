@@ -1,11 +1,17 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-// import { supabase } from '@/libs/supabase'
 
-import { useTemplate } from '@/libs/template.js'
+import { ITemplate } from '@/api/templates'
+import projectsApi, { IProjectParams, IProject } from '@/api/projects'
+
+import { useTemplate } from '@/libs/template'
 import { useUser } from '@/libs/user'
 
-import projectsApi from '@/api/projects'
+
+interface ICreatedData {
+  createdProject: IProject,
+  createdTemplate?: ITemplate | any
+}
 
 export function useProject() {
   const $store = useStore()
@@ -17,7 +23,13 @@ export function useProject() {
    * @param {Object} data 
    * @returns {Promise} Данные проекта
    */
-  const createProject = async ({ params, saveTemplateOption, templateName }) => {
+  const createProject = async (options: { 
+    params: IProjectParams, 
+    saveTemplateOption: boolean, 
+    templateName: string
+  }): Promise<ICreatedData | any> => {
+      const { params, saveTemplateOption, templateName } = options
+
     return await $user
       .getUserData()
       .then(async user => {
@@ -26,12 +38,12 @@ export function useProject() {
             ...params,
             user_id: user.id
           })
-          .then(async result => {
+          .then(async (result: IProject) => {
             fetchProjects()
 
-            const returnedData = {
-              createProject: result,
-              createTemplate: null
+            const returnedData: ICreatedData = {
+              createdProject: result,
+              createdTemplate: null
             }
 
             if (saveTemplateOption) {
@@ -42,7 +54,7 @@ export function useProject() {
                   name: templateName 
                 })
                 .then(result => {
-                  returnedData.createTemplate = result
+                  returnedData.createdTemplate = result
                 })
             }
             
@@ -56,7 +68,7 @@ export function useProject() {
    * @param {Integer} id 
    * @returns {Promise} Данные проекта
    */
-  const fetchProject = async (id) => {
+  const fetchProject = async (id: string): Promise<IProject> => {
     return await projectsApi
       .readById(id)
       .then(result => {
@@ -78,7 +90,7 @@ export function useProject() {
    * Запросить все проекты пользователя
    * @returns {Promise} Список проектов
    */
-  const fetchProjects = async () => {
+  const fetchProjects = async (): Promise<IProject[]> => {
     return await $user
       .getUserData()
       .then(async user => {
@@ -96,7 +108,7 @@ export function useProject() {
    * Получить все проекты пользователя
    * @returns {Array} Список проектов
    */
-  const getProjects = () => {
+  const getProjects = (): Promise<IProject[]> => {
     return computed(() => $store.getters.getProjects).value
   }
 
@@ -105,7 +117,7 @@ export function useProject() {
    * @param {Object} data 
    * @returns {Promise} Обновленные данные
    */
-  const updateProject = async (data, id) => {
+  const updateProject = async (data: IProjectParams, id: string): Promise<IProject> => {
     return await $user
       .getUserData()
       .then(async user => {
@@ -131,7 +143,7 @@ export function useProject() {
    * @param {Integer} id 
    * @returns {Promise} true
    */
-  const deleteProject = async (id) => {
+  const deleteProject = async (id: string): Promise<boolean> => {
     return await projectsApi
       .deleteById(id)
       .then(result => {
@@ -146,7 +158,7 @@ export function useProject() {
    * Удалить все проекты пользователя
    * @returns {Promise} true
    */
-  const deleteProjects = async () => {
+  const deleteProjects = async (): Promise<boolean> => {
     return await $user
       .getUserData()
       .then(async user => {

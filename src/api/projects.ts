@@ -1,11 +1,41 @@
 import { supabase } from '@/libs/supabase'
 
+export interface IProjectSettings {
+  fields: {
+    id: number,
+    name: string,
+    rows: number,
+    dayly: boolean,
+    rules: any[],
+    search: boolean,
+    date_now: boolean,
+    editable: boolean,
+    multipty: boolean,
+    nested_items: any[],
+    default_value: any,
+    field_type_id: number
+  }
+}
+
+export interface IProject {
+  id: string,
+  created: string,
+  name: string,
+  settings: IProjectSettings
+}
+
+export interface IProjectParams {
+  settings: IProjectSettings,
+  user_id: string,
+  name: string,
+}
+
 /**
  * Вставить одну запись
  * @param {Object} params 
  * @returns {Object} Запись
  */
-const insertRow = (params) => {
+const insertRow = (params: IProjectParams): PromiseLike<IProject | any> => {
   return supabase
     .from('Projects')
     .insert([params])
@@ -13,10 +43,7 @@ const insertRow = (params) => {
     .then(({ data, error }) => {
       if (error) throw error
       
-      return data
-    })
-    .catch(error => {
-      throw error.message
+      return data || null
     })
 }
 
@@ -25,7 +52,7 @@ const insertRow = (params) => {
  * @param {Array} params 
  * @returns {Array} Записи
  */
-const insertRows = (params) => {
+const insertRows = (params: IProjectParams[]): PromiseLike<IProject[]> => {
   return supabase
     .from('Projects')
     .insert(params)
@@ -33,10 +60,7 @@ const insertRows = (params) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
-    })
-    .catch(error => {
-      throw error.message
+      return data || []
     })
 }
 
@@ -45,7 +69,7 @@ const insertRows = (params) => {
  * @param {Integer} id Id проекта
  * @returns 
  */
-const readById = (id) => {
+const readById = (id: string): PromiseLike<IProject> => {
   return supabase
     .from('Projects')
     .select('*')
@@ -53,10 +77,7 @@ const readById = (id) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data[0]
-    })
-    .catch(error => {
-      throw error.message
+      return data ? data[0] : null
     })
 }
 
@@ -65,7 +86,7 @@ const readById = (id) => {
  * @param {Integer} userId 
  * @returns 
  */
-const readByUserId = (userId) => {
+const readByUserId = (userId: string): PromiseLike<IProject[]> => {
   return supabase
     .from('Projects')
     .select('*')
@@ -73,10 +94,7 @@ const readByUserId = (userId) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
-    })
-    .catch(error => {
-      throw error.message
+      return data || []
     })
 }
 
@@ -86,7 +104,7 @@ const readByUserId = (userId) => {
  * @param {Integer} id Id записи 
  * @returns 
  */
-const updateById = (params, id) => {
+const updateById = (params: IProjectParams, id: string): PromiseLike<IProject | any> => {
   return supabase
     .from('Projects')
     .update(params)
@@ -95,10 +113,7 @@ const updateById = (params, id) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
-    })
-    .catch(error => {
-      throw error.message
+      return data || null
     })
 }
 
@@ -107,16 +122,13 @@ const updateById = (params, id) => {
  * @param {Integer} id 
  * @returns null
  */
-const deleteById = (id) => {
+const deleteById = (id: string): PromiseLike<boolean> => {
   return supabase
     .from('Projects')
     .delete()
     .eq('id', id)
     .then(response => {
       return (response.status === 204)
-    })
-    .catch(error => {
-      throw error.message
     })
 }
 
@@ -125,16 +137,13 @@ const deleteById = (id) => {
  * @param {Integer} userId 
  * @returns 
  */
-const deleteByUserId = (userId) => {
+const deleteByUserId = (userId: string): PromiseLike<boolean> => {
   return supabase
     .from('Projects')
     .delete()
     .eq('user_id', userId)
     .then(response => {
       return (response.status === 204)
-    })
-    .catch(error => {
-      throw error.message
     })
 }
 

@@ -62,6 +62,16 @@ const props = defineProps({
     required: false,
     default: false
   },
+  accent: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  second: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   loading: {
     type: Boolean,
     required: false,
@@ -106,6 +116,14 @@ const className = computed(() => {
 
   if (props.success) {
     className += ' button-icon--success'
+  }
+
+  if (props.accent) {
+    className += ' button-icon--accent'
+  }
+
+  if (props.second) {
+    className += ' button-icon--second'
   }
 
   if (props.loading) { 
@@ -156,6 +174,8 @@ const emit = defineEmits(['click'])
 .button-icon--info,
 .button-icon--warning,
 .button-icon--danger,
+.button-icon--accent,
+.button-icon--second,
 .button-icon--success {
   padding: 4px;
   border-radius: var(--border-radius);
@@ -171,6 +191,14 @@ const emit = defineEmits(['click'])
     filter: brightness(0.8);
   }
 }
+
+.button-icon--second {
+  border: {
+    width: 2px;
+    style: solid;
+  }
+}
+
 .button-icon--neutral {
   background-color: var(--neutral);
   color: var(--background);
@@ -208,6 +236,26 @@ const emit = defineEmits(['click'])
   color: var(--text-base);
 
   &:hover:not(:disabled) {
+    color: var(--text-base);
+  }
+}
+
+.button-icon--accent {
+  background-color: var(--accent);
+  color: var(--text-base);
+
+  &:hover:not(:disabled) {
+    color: var(--text-base);
+  }
+}
+
+.button-icon--second {
+  background-color: var(--background);
+  border-color: var(--darkest);
+  color: var(--text-base);
+
+  &:hover:not(:disabled) {
+    background-color: var(--darkest);
     color: var(--text-base);
   }
 }
