@@ -1,10 +1,10 @@
 export default {
-  install: (app) => {
+  install: (app: any) => {
     const backdrop = document.createElement('div')
     backdrop.classList.add('_backdrop')
 
     app.directive('loading', {
-      created(el) {
+      created(el: any) {
         el.classList.add('_loading')
         el.appendChild(backdrop)
       },
@@ -14,7 +14,8 @@ export default {
       //   el.appendChild(backdrop)
       // },
 
-      updated(el, { value, oldValue }) {
+      updated(el: any, values: { value: boolean, oldValue: boolean }) {
+        const { value, oldValue } = values
       // updated(el, { value }) {
         // console.log('--- updated ---')
         // console.log('el:', el)

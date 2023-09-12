@@ -75,7 +75,7 @@
 <script setup>
 import { ref, inject } from 'vue'
 import dayjs from 'dayjs'
-import { deleteFromArray } from '@/utils/index.js' 
+import { deleteFromArray } from '@/utils/index' 
 
 import { useRoute } from 'vue-router'
 import { useTask } from '@/libs/task'

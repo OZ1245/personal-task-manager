@@ -1,3 +1,4 @@
+// FIXME: Можно удалить?
 import { supabase } from "@/libs/supabase"
 
 const getColumnsTypes = (tableName) => {

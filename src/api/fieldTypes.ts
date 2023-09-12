@@ -1,21 +1,28 @@
 import { supabase } from "@/libs/supabase"
 
+export interface ITypes {
+  id: number,
+  code: string,
+  name: string,
+  description: string
+}
+
 /**
  * Получить все записи
  * @returns {Array} 
  */
-const readAll = () => {
+const readAll = (): PromiseLike<ITypes[]> => {
   return supabase
     .from('FieldsTypes')
     .select('*')
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
+      return data || []
     })
-    .catch(error => {
-      throw error.message
-    })
+    // .then((error: any) => {
+    //   throw error.message
+    // })
 }
 
 export default {

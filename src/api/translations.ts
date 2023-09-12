@@ -1,20 +1,36 @@
 import { supabase } from "@/libs/supabase"
 
-const readAll = () => {
+// Interfaces
+export interface ITranslations {
+  id: string,
+  created: string,
+  modified?: string,
+  constant: string,
+  'lang:en': string,
+  'lang:ru': string,
+}
+
+// Methods
+
+/**
+ * Получить все переводы
+ * @returns Список фраз
+ */
+const readAll = (): PromiseLike<ITranslations[]> => {
   return supabase
     .from('Translations')
     .select('*')
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data
+      return data || []
     })
-    .catch(error => {
-      throw error.message
-    })
+    // .then((error: any) => {
+    //   throw error.message
+    // })
   }
   
-const readByKey = (key) => {
+const readByKey = (key: string): PromiseLike<ITranslations> => {
   return supabase
     .from('Translations')
     .select('*')
@@ -22,9 +38,9 @@ const readByKey = (key) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data[0]
+      return data ? data[0] : null
     })
-    .catch(error => {
+    .then((error: any) => {
       throw error.message
     })
 }
@@ -34,7 +50,7 @@ const readByKey = (key) => {
  * @param {String} lang 
  * @returns Список фраз
  */
-const readMessagesFromLanguage = (lang) => {
+const readMessagesFromLanguage = (lang: string): PromiseLike<Array<ITranslations>> => {
   return supabase
     .from('Translations')
     .select(`lang:${lang}`)
@@ -43,12 +59,14 @@ const readMessagesFromLanguage = (lang) => {
 
       return data
     })
-    .catch(error => {
+    .then((error: any) => {
       throw error.message
     })
 }
 
-const readMessageFromLanguage = ({ key, lang }) => {
+const readMessageFromLanguage = (params: { key: string, lang: string }): PromiseLike<Array<ITranslations>> => {
+  const { key, lang } = params
+  
   return supabase
     .from('Translations')
     .select(`lang:${lang}`)
@@ -56,9 +74,9 @@ const readMessageFromLanguage = ({ key, lang }) => {
     .then(({ data, error }) => {
       if (error) throw error
 
-      return data[0]
+      return data ? data[0] : null
     })
-    .catch(error => {
+    .then((error: any) => {
       throw error.message
     })
 }

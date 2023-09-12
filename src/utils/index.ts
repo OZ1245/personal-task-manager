@@ -1,4 +1,4 @@
-const deleteFromArray = (array, value, prop) => {
+const deleteFromArray = (array: any[], value: string, prop: string) => {
   array.forEach((element, i) => {
     if (typeof prop !== 'undefined') {
       if (element[prop] === value) {

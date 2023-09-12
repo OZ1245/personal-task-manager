@@ -169,7 +169,7 @@
 
 <script setup>
 import { defineProps, reactive, ref } from 'vue'
-import { deleteFromArray } from '@/utils/index.js' 
+import { deleteFromArray } from '@/utils/index' 
 import { useFieldType } from '@/libs/fieldType'
 
 import dayjs from 'dayjs'

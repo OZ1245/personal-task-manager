@@ -1,5 +1,5 @@
 export default {
-  install: (app, options) => {
+  install: (app: any, options: any) => {
     const globalT = options.global.t
 
     app.config.globalProperties.$t = globalT

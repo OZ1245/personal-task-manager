@@ -47,61 +47,56 @@
   </div>
 </template>
 
-<script setup>
-import { defineEmits, defineProps, ref, computed } from 'vue'
+<script lang="ts" setup>
+import { withDefaults, defineProps, defineEmits, ref, computed } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import dayjs from 'dayjs'
 import TheInput from '@/components/UI/form/TheInput.vue'
 
-const emits = defineEmits(['update:modelValue', 'select'])
+interface IOption {
+  id: number,
+  code: string,
+  name: string,
+  description: string,
+  title: string,
+  value: number,
+}
+// interface IClickOutside {
+//   (): boolean,
+// }
 
-const props = defineProps({
-  modelValue: {
-    type: [ Number, String ],
-    required: false,
-    default: () => {}
-  },
-  label: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  options: {
-    type: Array,
-    required: false,
-    default: () => []
-  },
-  placeholder: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  maxCount: {
-    type: Number,
-    required: false,
-    default: 6
-  },
-  selectId: {
-    type: String,
-    required: false,
-    default: ''
-  },
-  horizontal: {
-    type: Boolean,
-    required: false,
-    default: false
-  }
+const props = withDefaults(defineProps<{
+  modelValue: any,
+  label: string,
+  options: Array<IOption>,
+  placeholder: string,
+  maxCount: number,
+  selectId: string,
+  horizontal: boolean,
+  inputId: string,
+}>(), {
+  modelValue: null,
+  label: '',
+  options: () => [],
+  placeholder: '',
+  maxCount: 6,
+  selectId: '',
+  horizontal: false,
 })
+
+const emits = defineEmits<{
+  'update:modelValue': [ value: number ],
+}>()
 
 const showOptions = ref(false)
 const selectedOptionTitle = ref(props.options[0].title)
 
-const selectId = computed(() => {
+const selectId = computed((): string => {
   if (props.inputId) {
     return props.inputId
   }
   
-  return `select-${dayjs().valueOf()}${parseInt(Math.random())}`
+  return `select-${dayjs().valueOf()}${Math.floor(Math.random())}`
 })
 
 const onClickOutside = [
@@ -124,7 +119,7 @@ const onCloseOptions = () => {
   showOptions.value = false
 }
 
-const onSelect = (option) => {
+const onSelect = (option: IOption) => {
   console.log('--- onSelect ---')
   console.log('option:', option)
 

@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useStore } from "vuex"
-import fieldTypes from "@/api/fieldTypes"
+import fieldTypes, { ITypes } from "@/api/fieldTypes"
 
 export function useFieldType() {
   const $store = useStore()
@@ -9,7 +9,7 @@ export function useFieldType() {
    * Запросить все типы
    * @returns {Promise} Массив типов
    */
-  const fetchFieldTypes = async () => {
+  const fetchFieldTypes = async (): Promise<ITypes[]> => {
     return await fieldTypes
       .readAll()
       .then(result => {
@@ -19,7 +19,7 @@ export function useFieldType() {
       })
   }
 
-  const getFieldTypeById = (id) => {
+  const getFieldTypeById = (id: string) => {
     return computed(() => $store.getters.getFieldTypeById(id)).value
   }
 

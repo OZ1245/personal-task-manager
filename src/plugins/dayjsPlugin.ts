@@ -1,4 +1,5 @@
 import dayjs from "dayjs"
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 require(`dayjs/locale/ru`)
 
 const language = localStorage.getItem('language')
@@ -8,11 +9,10 @@ if (locale === 'ru') {
   dayjs.locale('ru')
 }
   
-const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
 export default {
-  install: (app) => {
+  install: (app: any) => {
     const globalDayjs = dayjs
 
     // This is what you want:
